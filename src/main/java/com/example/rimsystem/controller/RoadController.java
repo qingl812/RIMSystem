@@ -11,6 +11,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 public class RoadController {
     @RequestMapping("/dosth")
     public String dosth(){
-        return "hello";
+        return "homePage";
     }
 }
