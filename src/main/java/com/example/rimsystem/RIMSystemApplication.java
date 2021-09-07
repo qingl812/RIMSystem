@@ -5,13 +5,13 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.web.client.RestTemplate;
 
 @SpringBootApplication
-public class RimsystemApplication {
+public class RIMSystemApplication {
 
     public static void main(String[] args) {
-        SpringApplication.run(RimsystemApplication.class, args);
+        SpringApplication.run(RIMSystemApplication.class, args);
     }
 
     public RestTemplate restTemplate(){
-        new RestTemplate();
+        return new RestTemplate();
     }
 }

@@ -4,9 +4,6 @@ import lombok.Data;
 
 import java.util.List;
 
-/**
- * @auther luyu
- */
 @Data
 public class Road {
     private String roadName;
