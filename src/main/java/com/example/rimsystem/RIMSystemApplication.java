@@ -11,7 +11,5 @@ public class RIMSystemApplication {
         SpringApplication.run(RIMSystemApplication.class, args);
     }
 
-    public RestTemplate restTemplate(){
-        return new RestTemplate();
-    }
+
 }
