@@ -4,13 +4,13 @@ html {
 
 body {
     height: 100%;
-    margin: 0px;
-    padding: 0px
+    margin: 0;
+    padding: 0
 }
 #search{
     position: absolute;
-    top: 0px;
-    left: 0px;
+    top: 0;
+    left: 0;
     width: 100px;
     height: 100%;
     background-color: bisque;
@@ -18,17 +18,18 @@ body {
 
 #map{
     position: absolute;
-    top: 0px;
+    top: 0;
     left: 100px;
     bottom: 30px;
-    height: vh - 30px;
-    width: 50%;
+    width: 100%;
+    overflow:hidden;
 }
 
 #mapStatus{
     position: absolute;
-    bottom: 0px;
+    bottom: 0;
     left: 100px;
+    overflow:hidden;
     height: 30px;
     width: 100%;
     background-color: green;

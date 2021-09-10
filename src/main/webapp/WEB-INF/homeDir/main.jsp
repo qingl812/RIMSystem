@@ -3,7 +3,7 @@
 
 <head>
     <link rel="stylesheet" type="text/css" href="/css/mainStyle.css">
-    <script src="/static/js/jquery-3.6.0.js"></script>
+    <script src="/js/jquery-3.6.0.js"></script>
 </head>
 
 <body>
