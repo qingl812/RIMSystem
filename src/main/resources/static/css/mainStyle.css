@@ -11,7 +11,7 @@ body {
     position: absolute;
     top: 0px;
     left: 0px;
-    width: 100px;
+    width: 250px;
     height: 100%;
     background-color: bisque;
 }
@@ -19,7 +19,7 @@ body {
 #map{
     position: absolute;
     top: 0px;
-    left: 100px;
+    left: 250px;
     bottom: 30px;
     right: 0px;
 }
@@ -27,7 +27,7 @@ body {
 #mapStatus{
     position: absolute;
     bottom: 0px;
-    left: 100px;
+    left: 250px;
     right: 0px;
     height: 30px;
     background-color: aqua;
