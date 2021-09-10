@@ -22,7 +22,7 @@
 
 #status {
     position: absolute;
-    bottom: 0px;
+    bottom: 0;
     height: 40px;
     width: 100%;
     background-color: bisque;
