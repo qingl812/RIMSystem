@@ -36,7 +36,7 @@
             background-color: antiquewhite;
         }
 
-        #main {
+        #RIMMap {
             float: right;
             width: 80%;
             height: 75%;

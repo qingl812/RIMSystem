@@ -1,0 +1,35 @@
+html {
+    height: 100%
+}
+
+body {
+    height: 100%;
+    margin: 0px;
+    padding: 0px
+}
+#search{
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    width: 100px;
+    height: 100%;
+    background-color: bisque;
+}
+
+#map{
+    position: absolute;
+    top: 0px;
+    left: 100px;
+    bottom: 30px;
+    height: vh - 30px;
+    width: 50%;
+}
+
+#mapStatus{
+    position: absolute;
+    bottom: 0px;
+    left: 100px;
+    height: 30px;
+    width: 100%;
+    background-color: green;
+}

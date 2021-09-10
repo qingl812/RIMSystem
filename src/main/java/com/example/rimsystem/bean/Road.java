@@ -8,9 +8,6 @@ import lombok.ToString;
 import javax.persistence.Id;
 import java.util.List;
 
-/**
- * @auther luyu
- */
 @Data
 @ToString
 @NoArgsConstructor

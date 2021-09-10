@@ -1,0 +1,29 @@
+#head {
+    position: absolute;
+    height: 100px;
+    width: 100%;
+    background-color: aliceblue;
+}
+
+#navigation {
+    position: absolute;
+    top: 100px;
+    height: 40px;
+    width: 100%;
+}
+
+#main {
+    position: absolute;
+    top: 140px;
+    bottom: 40px;
+    width: 100%;
+    background-color: aquamarine;
+}
+
+#status {
+    position: absolute;
+    bottom: 0px;
+    height: 40px;
+    width: 100%;
+    background-color: bisque;
+}
