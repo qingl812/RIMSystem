@@ -21,15 +21,14 @@ body {
     top: 0px;
     left: 100px;
     bottom: 30px;
-    height: vh - 30px;
-    width: 50%;
+    right: 0px;
 }
 
 #mapStatus{
     position: absolute;
     bottom: 0px;
     left: 100px;
+    right: 0px;
     height: 30px;
-    width: 100%;
-    background-color: green;
+    background-color: aqua;
 }
