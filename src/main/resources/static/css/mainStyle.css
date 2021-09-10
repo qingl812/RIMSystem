@@ -32,3 +32,11 @@ body {
     height: 30px;
     background-color: aqua;
 }
+
+#drawingManager{
+    position: absolute;
+    top: 0px;
+    left: 100px;
+    bottom: 30px;
+    right: 0px;
+}
