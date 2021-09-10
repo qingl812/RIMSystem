@@ -1,3 +1,4 @@
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 
@@ -7,7 +8,7 @@
 <body>
 
 <div id="search">
-    <h1>search</h1>
+
 </div>
 
 </body>

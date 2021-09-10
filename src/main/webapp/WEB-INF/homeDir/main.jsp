@@ -13,7 +13,7 @@
     <!-- search.jsp !-->
     <jsp:include page="../mapDir/search.jsp"></jsp:include>
     <!-- map.jsp !-->
-    <jsp:include page="../mapDir/map.jsp"></jsp:include>
+    <jsp:include page="../mapDir/DrawingManager.jsp"></jsp:include>
     <!-- mapStatus.jsp !-->
     <jsp:include page="../mapDir/mapStatus.jsp"></jsp:include>
 </div>
