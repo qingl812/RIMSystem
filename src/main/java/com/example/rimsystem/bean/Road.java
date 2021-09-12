@@ -33,5 +33,7 @@ public class Road {
     private String curbType;
 //    某个主道路的各个支路
     private List<BranchRoad> branchRoads;
+//    道路坐标
+    private String roadCoordinate;
 
 }

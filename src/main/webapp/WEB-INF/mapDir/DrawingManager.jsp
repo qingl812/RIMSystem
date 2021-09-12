@@ -7,23 +7,29 @@
         #allmap {
 			position: absolute;
 			top: 0px;
-			bottom: 30px;
+			bottom: 0px;
 			left: 0px;
 			right:0px;
             overflow: hidden;
         }
 
-        #result {
-			position: absolute;
-			bottom: 0px;
-			height: 30px;
-			width: 100%;
+
+        #up-map-div{
+            width:200px;
+            height:100px;
+            top:0;
+            right: 0;
+            position:absolute;
+            z-index:9999;
+            border:1px dashed #000;
+            background-color: rgba(0,0,0,0.5)
+            opacity:0.6;
         }
     </style>
     <script type="text/javascript"
             src="http://api.map.baidu.com/api?v=2.0&ak=HpA4MtzOdUZ9Ywnum4HHwtnbwcIrn0Hc"></script>
     <!--加载鼠标绘制工具-->
-    <script type="text/javascript" src="/DrawingManager/DrawingManager.min.js"></script>
+    <script type="text/javascript" src="/DrawingManager/DrawingManager.js"></script>
     <link rel="stylesheet" href="/DrawingManager/DrawingManager.min.css"/>
     <link rel="stylesheet" href="/css/mainStyle.css"/>
     <title>鼠标绘制工具</title>
@@ -35,16 +41,18 @@
 <div id="allmap">
     <div id="drawingMap" style="height:100%;-webkit-transition: all 0.5s ease-in-out;transition: all 0.5s ease-in-out;">
     </div>
-</div>
-<div id="result">
-    <input type="button" value="获取绘制的覆盖物个数" onclick="alert(overlays.length)"/>
-    <input type="button" value="清除所有覆盖物" onclick="clearAll()"/>
-    <input type="button" value="获取最后一个覆盖物信息" id="getLastOverLay"/>
+    <div id="up-map-div">
+        绘制道路 <br>
+        ----------------------------<br>
+        <input type="radio" name="ifDraw" id="openDraw" style="font-size: small" onclick="openDrawing()">开始绘制 <input type="radio" id="closeDraw" name="ifDraw" style="font-size: small" onclick="drawingManager.close()"> 停止绘制
+        <button type="button" value="清除结果" onclick="clearAll()">清除结果</button> <button value="保存结果" onclick="realOverlaycomplete()">保存结果</button>
+    </div>
 </div>
 
 </div>
 <script type="text/javascript">
     // 百度地图API功能
+    var path;
     var map = new BMap.Map('drawingMap');
     var poi = new BMap.Point(116.307852, 40.057031);
     map.centerAndZoom(poi, 16);
@@ -52,21 +60,40 @@
     var overlays = [];
     var overlaycomplete = function (e) {
         overlays.push(e.overlay);
-        console.log(e.overlays.getPath())
-        var result = "";
-        var overlays_lines = e.overlay.getPath().length;
-        if (e.drawingMode == BMAP_DRAWING_POLYLINE) {
-            if (e.drawingMode == BMAP_DRAWING_POLYLINE || e.drawingMode == BMAP_DRAWING_POLYGON || e.drawingMode == BMAP_DRAWING_RECTANGLE) {
-                result += ' 所画的点个数：' + e.overlay.getPath().length;
-            }
-        };
-        for (var i = 0; i < overlays_lines.length; i++) {//循环连线个数
-            for (var j = 0; j < overlays_lines[i].getPath().length; j++) {//循环每一个连线上的点个数
-                result += overlays_lines[i].getPath()[j].lng;
-                result += (overlays_lines[i].getPath()[j].lat + "#");
-            }
+        $("input[name='ifDraw']").attr('checked','false');
+        path= e.overlay.getPath();
         }
+    var realOverlaycomplete = function (e){
+        alert("保存成功");
+        var jsonObj = {"lng":0,"lat":0};
+        var coordinate=[];
 
+        for(var i =0;i<path.length;i++){
+            jsonObj.lng= path[i].lng;
+            jsonObj.lat= path[i].lat;
+            coordinate.push(jsonObj);
+            console.log(jsonObj)
+        }
+        $.ajax({
+            type:"POST",
+            dataType:"json",
+            url:"/road/updateCoordinate",
+            data:JSON.stringify(coordinate),
+            contentType:"application/json;charset=UTF-8"
+        })
+    }
+    function openDrawing() {
+        if(overlays.length==1){
+            $("input[name='ifDraw']").get(0).checked=false;
+            $("input[name='ifDraw']").get(1).checked=true;
+            alert("只能有一条道路");
+
+        }else {
+            drawingManager.open();
+            drawingManager.setDrawingMode(BMAP_DRAWING_POLYLINE)
+
+
+        }
     }
     var styleOptions = {
         strokeColor: "red",    //边线颜色。
@@ -79,14 +106,12 @@
     //实例化鼠标绘制工具
     var drawingManager = new BMapLib.DrawingManager(map, {
         isOpen: false, //是否开启绘制模式
-        enableDrawingTool: true, //是否显示工具栏
+        enableDrawingTool: false, //是否显示工具栏
         drawingToolOptions: {
             anchor: BMAP_ANCHOR_TOP_RIGHT, //位置
             offset: new BMap.Size(5, 5), //偏离值
-            drawingModes : [BMAP_DRAWING_MARKER, BMAP_DRAWING_POLYLINE]
         },
         drawingTypes : [
-            BMAP_DRAWING_MARKER,
             BMAP_DRAWING_POLYLINE,
 
         ],
