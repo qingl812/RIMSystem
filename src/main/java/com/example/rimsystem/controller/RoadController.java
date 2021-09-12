@@ -6,11 +6,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @Controller
 @RequestMapping("/road")
 public class RoadController {
-    @RequestMapping("/homePage")
+    @RequestMapping("/indexSearch")
     public String doInformation(){
-
-        //return "homeDir/main";
-        return "homePage";
+        return "search";
     }
-
 }
