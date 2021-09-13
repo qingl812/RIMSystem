@@ -6,12 +6,15 @@ import lombok.NoArgsConstructor;
 import lombok.ToString;
 
 import javax.persistence.Id;
+import javax.persistence.Table;
+import javax.persistence.Transient;
 import java.util.List;
 
 @Data
 @ToString
 @NoArgsConstructor
 @AllArgsConstructor
+@Table(name="road")
 public class Road {
     private String roadName;
 //    道路类型
