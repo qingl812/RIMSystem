@@ -10,13 +10,12 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import java.util.List;
 
 @Controller
-@RequestMapping("/road")
 public class RoadController {
-    @RequestMapping("/indexSearch")
-    public String doInformation(){
-        return "search";
+    @RequestMapping("/homePage")
+    public String doHomePage(){
+        return "homePage";
     }
-    
+
     @RequestMapping("/updateCoordinate")
     @ResponseBody
     public String updateCoordinate(@RequestBody List<Coordinate> list){
