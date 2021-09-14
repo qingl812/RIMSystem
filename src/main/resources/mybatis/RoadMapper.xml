@@ -1,4 +1,33 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.example.rimsystem.mapper.RoadMapper">
+    <resultMap id="oneRoad" type="com.example.rimsystem.bean.Road">
+        <id property="roadNum" column="road_num"/>
+        <result property="blindBrickType" column="blind_brick_type"/>
+        <result property="curbType" column="curb_type"/>
+        <result property="roadCoordinate" column="road_coordinate"/>
+        <result property="roadLength" column="roadLength"/>
+        <result property="roadMaintenanceGrade" column="road_maintenance_grade"/>
+        <result property="roadName" column="road_name"/>
+        <result property="roadPavementType" column="road_pavement_type"/>
+        <result property="roadSectionNum" column="road_section_num"/>
+        <result property="roadType" column="road_type"/>
+        <result property="sidewalkBrickType" column="sidewalk_brick_type"/>
+        <collection property="branchRoads" column="road_num" ofType="com.example.rimsystem.bean.BranchRoad">
+            <result property="branchBlindBrickType" column="branch_blind_brick_type"/>
+            <result property="branchCurbType" column="branch_curb_type"/>
+            <result property="branchLength" column="branch_length"/>
+            <result property="branchName" column="branch_name"/>
+            <result property="branchNum" column="branch_num"/>
+            <result property="branchPavementType" column="branch_pavement_type"/>
+            <result property="branchSidewalkBrickType" column="branch_sidewalk_brick_type"/>
+            <result property="endLocation" column="end_location"/>
+            <result property="remark" column="remark"/>
+            <result property="startAndEndCoordinates" column="start_and_end_coordinates"/>
+            <result property="startLocation" column="start_location"/>
+        </collection>
+    </resultMap>
+    <select id="selectOneRoad" resultType="com.example.rimsystem.bean.Road">
+
+    </select>
 </mapper>

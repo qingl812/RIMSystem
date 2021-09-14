@@ -1,10 +1,9 @@
 package com.example.rimsystem.mapper;
 
 import com.example.rimsystem.bean.Road;
+import com.github.abel533.mapper.Mapper;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface BranchRoadMapper {
-//    增加道路信息
-
+public interface RoadGeneralMapper extends Mapper<Road> {
 }

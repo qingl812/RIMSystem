@@ -20,7 +20,7 @@ public class BranchRoad {
     private String startLocation;
     private String endLocation;
     //    起止坐标
-    private Map<Double,Double> startAndEndCoordinates;
+    private String startAndEndCoordinates;
     //    路面类型
     private String branchPavementType;
     //    人行道面砖类型
@@ -31,4 +31,6 @@ public class BranchRoad {
     private String branchCurbType;
     //      备注
     private String remark;
+    //    外键
+    private Integer road_num;
 }
