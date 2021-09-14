@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>广州省惠州市道路信息管理系统</title>
+
+    <link rel="stylesheet" type="text/css" href="/css/sharedPages.css">
+    <style>
+        #search {
+            position: absolute;
+            width: 250px;
+            top: 0;
+            bottom: 0;
+        }
+
+        #map {
+            position: absolute;
+            left: 250px;
+            top: 0;
+            bottom: 50px;
+            right: 0;
+        }
+
+        #mapStatus {
+            position: absolute;
+            bottom: 0;
+            left: 250px;
+            right: 0;
+            height: 50px;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- always show -->
+    <div id="head"><iframe src="sharedPages/head.html"></iframe></div>
+    <div id="navigation"><iframe src="sharedPages/navigation.html"></iframe></div>
+    <div id="status"><iframe src="sharedPages/status.html"></iframe></div>
+
+    <!-- 主页 -->
+    <div id="main">
+        <div id="search"><iframe src="/road/indexSearch"></iframe></div>
+        <div id="map"><iframe src="frames/map.html"></iframe></div>
+        <div id="mapStatus"><iframe src="frames/mapStatus.html"></iframe></div>
+    </div>
+</body>
+
+</html>
