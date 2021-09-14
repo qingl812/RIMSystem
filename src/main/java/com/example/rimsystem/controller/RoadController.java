@@ -11,25 +11,21 @@ import java.util.List;
 
 @Controller
 public class RoadController {
-    @RequestMapping("/homePage")
-    public String doHomePage(){
-        return "homePage";
-    }
-
     @RequestMapping("/updateCoordinate")
     @ResponseBody
-    public String updateCoordinate(@RequestBody List<Coordinate> list){
-        String coordinate="";
+    public String updateCoordinate(@RequestBody List<Coordinate> list) {
+        String coordinate = "";
         for (Coordinate coordinate1 : list) {
-            coordinate+=(coordinate1.lng+',');
-            coordinate+=(coordinate1.lat+'#');
+            coordinate += (coordinate1.lng + ',');
+            coordinate += (coordinate1.lat + '#');
         }
         System.out.println(coordinate);
         return "homePage";
     }
+
     @Data
     @AllArgsConstructor
-    static class Coordinate{
+    static class Coordinate {
         private String lng;
         private String lat;
     }

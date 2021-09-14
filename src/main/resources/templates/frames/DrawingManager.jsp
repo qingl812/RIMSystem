@@ -29,8 +29,8 @@
     <script type="text/javascript"
             src="http://api.map.baidu.com/api?v=2.0&ak=HpA4MtzOdUZ9Ywnum4HHwtnbwcIrn0Hc"></script>
     <!--加载鼠标绘制工具-->
-    <script type="text/javascript" src="/DrawingManager/DrawingManager.js"></script>
-    <link rel="stylesheet" href="/DrawingManager/DrawingManager.min.css"/>
+    <script type="text/javascript" src="/static/DrawingManager/DrawingManager.js"></script>
+    <link rel="stylesheet" href="/static/DrawingManager/DrawingManager.min.css"/>
     <link rel="stylesheet" href="/css/mainStyle.css"/>
     <title>鼠标绘制工具</title>
 </head>
