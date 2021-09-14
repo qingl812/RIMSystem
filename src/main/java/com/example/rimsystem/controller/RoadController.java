@@ -11,7 +11,10 @@ import java.util.List;
 
 @Controller
 public class RoadController {
-
+    @RequestMapping("/homePage")
+    public String doHomePage(){
+        return "homePage";
+    }
 
     @RequestMapping("/updateCoordinate")
     @ResponseBody
