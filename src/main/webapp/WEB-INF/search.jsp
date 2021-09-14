@@ -7,6 +7,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
+    <script src="/js/jquery-3.6.0.js"></script>
 </head>
 
 <body>
@@ -15,7 +16,7 @@
     <div id="allSearch">
         <form action="/road/">
             <div>
-                <input type="radio" name="classification" value="1" checked>区属
+                <input type="radio" name="classification" value="1" checked onclick="">区属
                 <input type="radio" name="classification" value="2">管理单位
                 <input type="radio" name="classification" value="3"> 名称
             </div>
