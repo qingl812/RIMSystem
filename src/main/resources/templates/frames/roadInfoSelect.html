@@ -6,10 +6,11 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
-
+    <script src="/js/jquery-3.6.0"></script>
     <style>
-        button {
-            background-size: 30px, 30px;
+
+        li{
+            list-style-type:none;
         }
     </style>
 </head>
@@ -17,64 +18,72 @@
 <body style="background-color: rgb(229, 243, 252);">
     <div style="text-align: center; height: 30px;">请选择下面的树</div>
     <div class="buttonSet" style="width: 30px; height: 120px;">
-        <button style="background-image: url(/static/img/roundPlus.png);"></button>
-        <button style="background-image: url(/static/img/searchSign.png);"></button>
-        <button style="background-image: url(/static/img/plusSign.png);"></button>
-        <button style="background-image: url(/static/img/minusSign.png);"></button>
+        <a href=""><img width="30px" height="30px" src="/img/roundPlus.png"></a>
+        <a href=""><img width="30px" height="30px" src="/img/roundMinus.png"></a>
+        <a href=""><img width="30px" height="30px" src="/img/minusSign.png"></a>
+        <a href=""><img width="30px" height="30px" src="/img/plusSign.png"></a>
     </div>
     <div class="roadTree" style="position: absolute; left: 30px; right: 0px; top: 30px;">
+        <ul id="mainRoadDoc">
+            <li id="mainRoad"><img src="/img/doc.png" width="20px" height="20px"> 下沙路</li>
+
+        </ul>
     </div>
 
     <script>
-        // 数据
-        let navData = [
-            { id: 1, text: '一级菜单A', parentId: null },
-            { id: 2, text: '一级菜单B', parentId: null },
-            { id: 3, text: '一级菜单C', parentId: null },
-            { id: 4, text: '二级菜单AA', parentId: 1 },
-            { id: 5, text: '二级菜单AB', parentId: 1 },
-            { id: 6, text: '二级菜单AC', parentId: 1 },
-            { id: 7, text: '二级菜单BA', parentId: 2 },
-            { id: 8, text: '二级菜单BB', parentId: 2 },
-            { id: 9, text: '二级菜单BC', parentId: 2 },
-            { id: 10, text: '二级菜单CA', parentId: 3 },
-            { id: 11, text: '二级菜单CB', parentId: 3 },
-            { id: 12, text: '二级菜单CC', parentId: 3 },
-            { id: 13, text: '三级菜单AAA', parentId: 4 },
-            { id: 14, text: '三级菜单BAA', parentId: 7 },
-            { id: 15, text: '三级菜单CAA', parentId: 10 }
-        ];
-        // let nav = document.getElementsByClassName('roadTree')
-        let nav = document.querySelector('.roadTree')
-        // 将数组置为树形
-        let treeee = (function makeTreeData(arr, parentId) {
-            let temp = []
-            for (let i = 0; i < arr.length; i++) {
-                if (arr[i].parentId === parentId) {
-                    temp.push(arr[i])
-                    arr[i].children = makeTreeData(navData, arr[i].id)
-                }
-            }
-            return temp
-        })(navData, null)
-        console.log(treeee);
-        // 创造dom树
-        (function makeDomTree(data, node) {
-            let ul
-            for (let i = 0; i < data.length; i++) {
-                ul = document.createElement('ul')
-                let li = document.createElement('li')
-                li.innerHTML = data[i].text
-                node.appendChild(ul)
-                ul.appendChild(li)
-                if (data[i].children.length !== 0) {
-                    let element = makeDomTree(data[i].children, ul)
-                    ul.appendChild(element)
-                }
 
-            }
-            return ul
-        })(treeee, nav)
+
+        
+
+        // 数据
+        // let navData = [
+        //     { id: 1, text: '一级菜单A', parentId: null },
+        //     { id: 2, text: '一级菜单B', parentId: null },
+        //     { id: 3, text: '一级菜单C', parentId: null },
+        //     { id: 4, text: '二级菜单AA', parentId: 1 },
+        //     { id: 5, text: '二级菜单AB', parentId: 1 },
+        //     { id: 6, text: '二级菜单AC', parentId: 1 },
+        //     { id: 7, text: '二级菜单BA', parentId: 2 },
+        //     { id: 8, text: '二级菜单BB', parentId: 2 },
+        //     { id: 9, text: '二级菜单BC', parentId: 2 },
+        //     { id: 10, text: '二级菜单CA', parentId: 3 },
+        //     { id: 11, text: '二级菜单CB', parentId: 3 },
+        //     { id: 12, text: '二级菜单CC', parentId: 3 },
+        //     { id: 13, text: '三级菜单AAA', parentId: 4 },
+        //     { id: 14, text: '三级菜单BAA', parentId: 7 },
+        //     { id: 15, text: '三级菜单CAA', parentId: 10 }
+        // ];
+        // // let nav = document.getElementsByClassName('roadTree')
+        // let nav = document.querySelector('.roadTree')
+        // // 将数组置为树形
+        // let treeee = (function makeTreeData(arr, parentId) {
+        //     let temp = []
+        //     for (let i = 0; i < arr.length; i++) {
+        //         if (arr[i].parentId === parentId) {
+        //             temp.push(arr[i])
+        //             arr[i].children = makeTreeData(navData, arr[i].id)
+        //         }
+        //     }
+        //     return temp
+        // })(navData, null)
+        // console.log(treeee);
+        // // 创造dom树
+        // (function makeDomTree(data, node) {
+        //     let ul
+        //     for (let i = 0; i < data.length; i++) {
+        //         ul = document.createElement('ul')
+        //         let li = document.createElement('li')
+        //         li.innerHTML = data[i].text
+        //         node.appendChild(ul)
+        //         ul.appendChild(li)
+        //         if (data[i].children.length !== 0) {
+        //             let element = makeDomTree(data[i].children, ul)
+        //             ul.appendChild(element)
+        //         }
+        //
+        //     }
+        //     return ul
+        // })(treeee, nav)
     </script>
 
 </body>
