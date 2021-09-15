@@ -81,16 +81,6 @@ public class HtmlController {
         return "frames/mapStatus";
     }
 
-    @RequestMapping("/frames/roadInfoSelect")
-    public String roadInfoSelect() {
-        return "frames/roadInfoSelect";
-    }
-
-    @RequestMapping("/frames/roadInfoWrite")
-    public String roadInfoWrite() {
-        return "frames/roadInfoWrite";
-    }
-
     @RequestMapping("/frames/search")
     public String search() {
         return "frames/search";
