@@ -16,10 +16,11 @@ import java.util.List;
 @AllArgsConstructor
 @Table(name="road")
 public class Road {
+    @Id
+    private Integer id;
     private String roadName;
 //    道路类型
     private String roadType;
-    @Id
     private Integer roadNum;
     private Double roadLength;
 //    道路分段数

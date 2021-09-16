@@ -27,7 +27,7 @@
             <result property="startLocation" column="start_location"/>
         </collection>
     </resultMap>
-    <select id="selectOneRoad" resultType="com.example.rimsystem.bean.Road">
-
+    <select id="selectOneRoad" resultMap="oneRoad">
+        select
     </select>
 </mapper>

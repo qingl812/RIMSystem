@@ -13,9 +13,10 @@ import java.util.Map;
 @AllArgsConstructor
 @NoArgsConstructor
 public class BranchRoad {
-    private String branchName;
     @Id
-    private String branchNum;
+    private Integer id;
+    private Integer branchNum;
+    private String branchName;
     private Double branchLength;
     private String startLocation;
     private String endLocation;
@@ -32,5 +33,11 @@ public class BranchRoad {
     //      备注
     private String remark;
     //    外键
-    private Integer road_num;
+    private Integer roadId;
+    public BranchRoad(String branchName,Integer branchNum,Double branchLength,Integer roadId){
+        this.branchName=branchName;
+        this.branchNum=branchNum;
+        this.branchLength=branchLength;
+        this.roadId=roadId;
+    }
 }
