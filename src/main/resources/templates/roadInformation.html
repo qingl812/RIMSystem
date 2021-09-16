@@ -174,8 +174,7 @@
                     <tr>
                         <td>道路类型</td>
                         <td>
-                            <select>
-                                <option>城市主干道</option>
+                            <select id="roadSelector">
                             </select>
                         </td>
                         <td>道路养护等级</td>
@@ -198,28 +197,26 @@
                     <tr>
                         <td>道路路面类型</td>
                         <td>
-                            <select>
-                                <option>沥青混凝土</option>
+                            <select id="roadPavementSelector">
+
                             </select>
                         </td>
                         <td>人行道面砖类型</td>
                         <td>
-                            <select>
-                                <option>四角彩色环保砖</option>
+                            <select id="sidewalkBrickSelector">
                             </select>
                         </td>
                     </tr>
                     <tr>
                         <td>盲道面砖类型</td>
                         <td>
-                            <select>
-                                <option>四角彩色盲人道砖</option>
+                            <select id="blindBrickSelector">
+
                             </select>
                         </td>
                         <td>路缘石（侧石）类型</td>
                         <td>
-                            <select>
-                                <option>路缘石（侧石）</option>
+                            <select id="curbSelector">
                             </select>
                         </td>
                     </tr>
@@ -238,6 +235,40 @@
             </div>
         </div>
     </div>
+
+    <script>
+        $.ajax({
+            url:"/roadType/searchType",
+            type:"POST",
+            dataType:'json',
+            success: function (data) {
+                $.each(data,function (idx,obj) {
+                    if(obj.typeId=='1'){
+                        let roadOption = "<option value="+obj.typeId+">"+obj.name+"</option>";
+                        $("#roadSelector").append(roadOption);
+                    }
+                    else if(obj.typeId=='2'){
+                        let roadOption = "<option value="+obj.typeId+">"+obj.name+"</option>";
+                        $("#roadPavementSelector").append(roadOption);
+                    }
+                    else if(obj.typeId=='3'){
+                        let roadOption = "<option value="+obj.typeId+">"+obj.name+"</option>";
+                        $("#sidewalkBrickSelector").append(roadOption);
+                    }
+                    else if(obj.typeId=='4'){
+                        let roadOption = "<option value="+obj.typeId+">"+obj.name+"</option>";
+                        $("#blindBrickSelector").append(roadOption);
+                    }
+                    else if(obj.typeId=='5'){
+                        let roadOption = "<option value="+obj.typeId+">"+obj.name+"</option>";
+                        $("#curbSelector").append(roadOption);
+                    }
+                })
+                console.log(data);
+            }
+        })
+
+    </script>
 
     <script>
         function showBasicInfo(showId) {
