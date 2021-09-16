@@ -24,6 +24,44 @@
             left: 250px;
             right: 0;
         }
+
+        li{
+            list-style-type:none;
+        }
+
+
+        /* 防止input超出单元格 */
+        input {
+            -webkit-box-sizing: border-box;
+            -moz-box-sizing: border-box;
+            box-sizing: border-box;
+        }
+
+        input,
+        select {
+            width: 100%;
+        }
+
+        table {
+            background-color: rgb(237, 247, 255);
+            width: 100%;
+            height: 100%;
+            float: left;
+        }
+
+        td {
+            border: 1px solid #9BCCFD;
+        }
+
+        td,
+        td+td+td {
+            text-align: right;
+        }
+
+        td+td,
+        td+td+td+td {
+            text-align: left;
+        }
     </style>
 </head>
 
@@ -35,8 +73,157 @@
 
     <!-- 道路资料 -->
     <div id="main">
-        <div id="roadInfoSelect"><iframe src="/frames/roadInfoSelect"></iframe></div>
-        <div id="roadInfoWrite"><iframe src="/frames/roadInfoWrite"></iframe></div>
+        <div id="roadInfoSelect" style="background-color: rgb(229, 243, 252);">
+
+            <div style="text-align: center; height: 30px;">请选择下面的树</div>
+            <div class="buttonSet" style="width: 30px; height: 120px;">
+                <a href=""><img width="30px" height="30px" src="/img/roundPlus.png"></a>
+                <a href=""><img width="30px" height="30px" src="/img/roundMinus.png"></a>
+                <a href=""><img width="30px" height="30px" src="/img/minusSign.png"></a>
+                <a href=""><img width="30px" height="30px" src="/img/plusSign.png"></a>
+            </div>
+            <div class="roadTree" style="position: absolute; left: 30px; right: 0px; top: 30px;">
+                <ul id="mainRoadDoc">
+                    <li id="mainRoad"><img src="/img/doc.png" width="20px" height="20px"> 下沙路</li>
+
+                </ul>
+            </div>
+            <script>
+
+
+
+
+                // 数据
+                // let navData = [
+                //     { id: 1, text: '一级菜单A', parentId: null },
+                //     { id: 2, text: '一级菜单B', parentId: null },
+                //     { id: 3, text: '一级菜单C', parentId: null },
+                //     { id: 4, text: '二级菜单AA', parentId: 1 },
+                //     { id: 5, text: '二级菜单AB', parentId: 1 },
+                //     { id: 6, text: '二级菜单AC', parentId: 1 },
+                //     { id: 7, text: '二级菜单BA', parentId: 2 },
+                //     { id: 8, text: '二级菜单BB', parentId: 2 },
+                //     { id: 9, text: '二级菜单BC', parentId: 2 },
+                //     { id: 10, text: '二级菜单CA', parentId: 3 },
+                //     { id: 11, text: '二级菜单CB', parentId: 3 },
+                //     { id: 12, text: '二级菜单CC', parentId: 3 },
+                //     { id: 13, text: '三级菜单AAA', parentId: 4 },
+                //     { id: 14, text: '三级菜单BAA', parentId: 7 },
+                //     { id: 15, text: '三级菜单CAA', parentId: 10 }
+                // ];
+                // // let nav = document.getElementsByClassName('roadTree')
+                // let nav = document.querySelector('.roadTree')
+                // // 将数组置为树形
+                // let treeee = (function makeTreeData(arr, parentId) {
+                //     let temp = []
+                //     for (let i = 0; i < arr.length; i++) {
+                //         if (arr[i].parentId === parentId) {
+                //             temp.push(arr[i])
+                //             arr[i].children = makeTreeData(navData, arr[i].id)
+                //         }
+                //     }
+                //     return temp
+                // })(navData, null)
+                // console.log(treeee);
+                // // 创造dom树
+                // (function makeDomTree(data, node) {
+                //     let ul
+                //     for (let i = 0; i < data.length; i++) {
+                //         ul = document.createElement('ul')
+                //         let li = document.createElement('li')
+                //         li.innerHTML = data[i].text
+                //         node.appendChild(ul)
+                //         ul.appendChild(li)
+                //         if (data[i].children.length !== 0) {
+                //             let element = makeDomTree(data[i].children, ul)
+                //             ul.appendChild(element)
+                //         }
+                //
+                //     }
+                //     return ul
+                // })(treeee, nav)
+            </script>
+        </div>
+        <div id="roadInfoWrite">
+            <div style="height: 40px; left: 0px; right: 0px;">
+                <button>基本信息</button>
+                <button>图片信息</button>
+                <button>录音录像</button>
+            </div>
+
+            <div style="top: 40px; bottom: 0px; left: 0px; right: 0px;">
+                <table border="0" cellspacing="0" cellpadding="0">
+                    <tr style="background-color: rgb(102, 169, 222);">
+                        <td colspan="4" style="text-align: center;">基本信息</td>
+                    </tr>
+                    <tr>
+                        <td style="width: 200px;">道路名称</td>
+                        <td>
+                            <input type=" text" value="沙下路" />
+                        </td>
+                        <td style="width: 200px;">道路编号</td>
+                        <td>
+                            <input type="text" value="333" />
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>道路类型</td>
+                        <td>
+                            <select>
+                                <option>城市主干道</option>
+                            </select>
+                        </td>
+                        <td>道路养护等级</td>
+                        <td>
+                            <select>
+                                <option>III等养护</option>
+                            </select>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>道路总长</td>
+                        <td>
+                            <input type="text" value="2000" />
+                        </td>
+                        <td>道路分段数</td>
+                        <td>
+                            <input type="text" value="3" />
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>道路路面类型</td>
+                        <td>
+                            <select>
+                                <option>沥青混凝土</option>
+                            </select>
+                        </td>
+                        <td>人行道面砖类型</td>
+                        <td>
+                            <select>
+                                <option>四角彩色环保砖</option>
+                            </select>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>盲道面砖类型</td>
+                        <td>
+                            <select>
+                                <option>四角彩色盲人道砖</option>
+                            </select>
+                        </td>
+                        <td>路缘石（侧石）类型</td>
+                        <td>
+                            <select>
+                                <option>路缘石（侧石）</option>
+                            </select>
+                        </td>
+                    </tr>
+                    <tr style="background-color: rgb(207, 230, 253);">
+                        <td colspan="4" style="text-align: center;">保存</td>
+                    </tr>
+                </table>
+            </div>
+        </div>
     </div>
 </body>
 
