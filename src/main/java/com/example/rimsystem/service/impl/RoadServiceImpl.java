@@ -1,5 +1,6 @@
 package com.example.rimsystem.service.impl;
 
+import com.example.rimsystem.bean.Road;
 import com.example.rimsystem.mapper.RoadGeneralMapper;
 import com.example.rimsystem.mapper.RoadMapper;
 import com.example.rimsystem.service.RoadService;
@@ -16,4 +17,8 @@ public class RoadServiceImpl implements RoadService {
     @Autowired
     RoadMapper roadMapper;
 
+    @Override
+    public void insertOneRoad(Road road) {
+        roadGeneralMapper.insert(road);
+    }
 }
