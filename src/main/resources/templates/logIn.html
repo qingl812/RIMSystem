@@ -1,15 +1,111 @@
 <!DOCTYPE html>
 <html lang="en">
 
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-</head>
+	<head>
+		<meta charset="UTF-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<title>登录</title>
 
-<body>
-    <h1>登录</h1>
-</body>
+		<style type="text/css">
+			#backgrd_top {
+				position: absolute;
+				top: 0;
+				bottom: 50%;
+				left: 0;
+				right: 0;
+				background: url("/img/topPart.png");
+				background-size: 100% 100%;
+			}
+
+			#backgrd_bottom {
+				position: absolute;
+				top: 50%;
+				bottom: 0;
+				left: 0;
+				right: 0;
+				background: url("/img/bottomPart.png");
+				background-size: 100% 100%;
+			}
+
+			#login {
+				position: absolute;
+				top: 100px;
+				left: 100px;
+
+				width: 540px;
+				height: 320px;
+
+				float: left;
+
+				background: url("/img/loginPart.png");
+				background-size: 100%;
+				z-index: 9;
+			}
+
+			#loginControl {
+				position: absolute;
+				top: 38%;
+				height: 20px;
+				left: 24%;
+				right: 20%;
+			}
+
+			input {
+				height: 25px;
+
+			}
+
+			#button {
+				border: 0;
+				background: -webkit-radial-gradient(#60add6, #206f99);
+				height: 30px;
+				width: 100px;
+				font-family: 华云彩文;
+				font-size: 15px;
+				"
+
+			}
+
+			#button:hover {
+				background: -webkit-radial-gradient(#5e73b1, #314be0);
+			}
+		</style>
+	</head>
+
+	<body>
+		<div id="login">
+			<div id="loginControl">
+				<form action="/homePage" method="post">
+					<table>
+						<tr>
+							<td style="color: dodgerblue; font-size: 18px;">用户名：</td>
+							<td><input type="text" placeholder="请输入用户名" style="font-size: 15px;"></td>
+						</tr>
+						<tr>
+							<td style="color: dodgerblue; font-size: 18px;">密 码：</td>
+							<td><input type="password" placeholder="请输入密码" style="font-size: 15px;" /></td>
+						</tr>
+						<tr>
+							<td></td>
+							<td><input type="submit" value="登 录" id="button" /></td>
+						</tr>
+					</table>
+				</form>
+			</div>
+		</div>
+		<div id="backgrd_top"></div>
+		<div id="backgrd_bottom"></div>
+
+		<script>
+			function resize() {
+				document.getElementById("login").style.top = (document.documentElement.clientHeight - 320) / 2 + "px";
+				document.getElementById("login").style.left = (document.documentElement.clientWidth - 540) / 2 + "px";
+			}
+
+			window.onresize = resize;
+			window.onload = resize;
+		</script>
+	</body>
 
 </html>
