@@ -8,6 +8,17 @@
     <title>Document</title>
 
     <script src="/js/jquery-3.6.0.js"></script>
+
+    <style type="text/css">
+        #searchResult{
+            position: absolute;
+            top:170px;
+            bottom: 80px;
+            background-color: cyan;
+            left: 20px;
+            right: 20px;
+        }
+    </style>
 </head>
 
 <body>
@@ -64,8 +75,40 @@
     <div style="height: 5%"><button name="doSearch" type="submit" style="float: right">搜索</button><img
             src="/img/search.jpg" style="float: right ;height: 24px"></div>
 
-    <div style="background-color: cyan;height: 65%;width: 80%">
-        沙下路
+    <div id="searchResult" >
+        <table>
+            <tr>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td colspan="6" align="center">
+                    <span id="page"></span>
+                    <a href="" id="firstPage">首页</a>
+                    <a href="">上一页 </a>
+                    <a href="">下一页 </a>
+                    <a href="">末页</a>
+                </td>
+            </tr>
+        </table>
+    <script>
+        let currentPage=1;
+        $("#firstPage").click(function () {
+            $.ajax({
+                url:"/allRoadPages?currentPage="+1,
+                type:"get",
+                dataType:"json",
+                success:function (data) {
+                    console.log(data)
+                }
+            })
+        });
+
+    </script>
     </div>
 </body>
 

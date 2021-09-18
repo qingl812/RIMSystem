@@ -21,7 +21,7 @@ public class Road {
     private String roadName;
 //    道路类型
     private String roadType;
-    private Integer roadNum;
+    private String roadNum;
     private Double roadLength;
 //    道路分段数
     private Integer roadSectionNum;
@@ -39,5 +39,5 @@ public class Road {
     private List<BranchRoad> branchRoads;
 //    道路坐标
     private String roadCoordinate;
-
+    private User user;
 }
