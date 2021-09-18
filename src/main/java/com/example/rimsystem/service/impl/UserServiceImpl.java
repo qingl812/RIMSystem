@@ -17,7 +17,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public User selectUserByName(String name) {
         User user = new User();
-        user.setUserName(name);
+        user.setName(name);
         return userGeneralMapper.selectOne(user);
     }
 
