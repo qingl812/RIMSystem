@@ -15,9 +15,10 @@ public class UserServiceImpl implements UserService {
     @Autowired
     private UserGeneralMapper userGeneralMapper;
     @Override
-    public User selectUserByName(String name) {
+    public User selectUserByName(String name,String password) {
         User user = new User();
         user.setName(name);
+        user.setPassword(password);
         return userGeneralMapper.selectOne(user);
     }
 
