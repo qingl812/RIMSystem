@@ -76,15 +76,15 @@
 	<body>
 		<div id="login">
 			<div id="loginControl">
-				<form action="/homePage" method="post">
+				<form action="/doLogin" method="post">
 					<table>
 						<tr>
 							<td style="color: dodgerblue; font-size: 18px;">用户名：</td>
-							<td><input type="text" placeholder="请输入用户名" style="font-size: 15px;"></td>
+							<td><input type="text" name="userName" placeholder="请输入用户名" style="font-size: 15px;"></td>
 						</tr>
 						<tr>
 							<td style="color: dodgerblue; font-size: 18px;">密 码：</td>
-							<td><input type="password" placeholder="请输入密码" style="font-size: 15px;" /></td>
+							<td><input type="password" name="userPassword" placeholder="请输入密码" style="font-size: 15px;" /></td>
 						</tr>
 						<tr>
 							<td></td>
@@ -97,7 +97,9 @@
 		<div id="backgrd_top"></div>
 		<div id="backgrd_bottom"></div>
 
+
 		<script>
+
 			function resize() {
 				document.getElementById("login").style.top = (document.documentElement.clientHeight - 320) / 2 + "px";
 				document.getElementById("login").style.left = (document.documentElement.clientWidth - 540) / 2 + "px";

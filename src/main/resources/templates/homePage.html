@@ -120,7 +120,31 @@
                 <ul>
                     <li><a href="/homePage?searchListId=0">沙下路</a></li>
                     <li><a href="/homePage?searchListId=1">东湖西路</a></li>
+                    <li><a href="/homePage?searchListId=2"></a></li>
+                    <li><a href="/homePage?searchListId=3"></a></li>
+                    <li><a href="/homePage?searchListId=4"></a></li>
+                    <li><a href="/homePage?searchListId=5"></a></li>
+                    <li colspan="6" align="center">
+                        <span id="page"></span>
+                        <a href="" id="firstPage">首页</a>
+                        <a href="">上一页 </a>
+                        <a href="">下一页 </a>
+                        <a href="">末页</a>
+                    </li>
                 </ul>
+                <script>
+                    let currentPage = 1;
+                    $("#firstPage").click(function () {
+                        $.ajax({
+                            url: "/allRoadPages?currentPage=" + 1,
+                            type: "get",
+                            dataType: "json",
+                            success: function (data) {
+                                console.log(data)
+                            }
+                        })
+                    });
+                </script>
             </div>
 
         </div>

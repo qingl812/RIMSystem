@@ -5,6 +5,8 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 
+import javax.persistence.Id;
+
 /**
  * @auther luyu
  */
@@ -13,9 +15,15 @@ import lombok.ToString;
 @AllArgsConstructor
 @NoArgsConstructor
 public class User {
-    private Integer userId;
-    private String userName;
+    @Id
+    private Integer id;
+    private Integer account;
+    private String name;
     private String password;
 //    管理单位
-    private String management;
+    private String organizationName;
+//    用户权限
+    private String userPermission;
+//        是否激活
+    private Integer status;
 }

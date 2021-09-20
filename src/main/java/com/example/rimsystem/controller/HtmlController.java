@@ -1,5 +1,6 @@
 package com.example.rimsystem.controller;
 
+import com.example.rimsystem.bean.User;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import org.springframework.stereotype.Controller;
@@ -7,6 +8,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import javax.servlet.http.HttpSession;
 import java.util.List;
 
 @Controller
