@@ -56,6 +56,11 @@ public class HtmlController {
         return "workCommunication";
     }
 
+    @RequestMapping("/roadData")
+    public String roadData() {
+        return "roadData";
+    }
+
     @RequestMapping("/sharedPages/head")
     public String head() {
         return "sharedPages/head";
