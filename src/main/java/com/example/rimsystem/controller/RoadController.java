@@ -6,11 +6,8 @@ import com.example.rimsystem.mapper.RoadGeneralMapper;
 import com.example.rimsystem.service.RoadService;
 import lombok.AllArgsConstructor;
 import lombok.Data;
-<<<<<<< HEAD
 import org.springframework.http.HttpRequest;
-=======
 import org.springframework.beans.factory.annotation.Autowired;
->>>>>>> ebba27af98024fb1cf7fe49c45ebb164a91734b2
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestBody;

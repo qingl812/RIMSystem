@@ -6,7 +6,7 @@
 		<meta http-equiv="X-UA-Compatible" content="IE=edge">
 		<meta name="viewport" content="width=device-width, initial-scale=1.0">
 		<title>登录</title>
-
+		<script src="/js/jquery-3.6.0.js"></script>
 		<style type="text/css">
 			#backgrd_top {
 				position: absolute;
@@ -76,22 +76,21 @@
 	<body>
 		<div id="login">
 			<div id="loginControl">
-				<form action="" method="post">
+
 					<table>
 						<tr>
 							<td style="color: dodgerblue; font-size: 18px;">用户名：</td>
-							<td><input type="text" name="userName" placeholder="请输入用户名" style="font-size: 15px;"></td>
+							<td><input type="text" name="username" placeholder="请输入用户名" style="font-size: 15px;"></td>
 						</tr>
 						<tr>
 							<td style="color: dodgerblue; font-size: 18px;">密 码：</td>
-							<td><input type="password" name="userPassword" placeholder="请输入密码" style="font-size: 15px;" /></td>
+							<td><input type="password" name="password" placeholder="请输入密码" style="font-size: 15px;" /></td>
 						</tr>
 						<tr>
 							<td></td>
-							<td><input type="submit" value="登 录" id="button" onclick="" /></td>
+							<td><input type="button" value="登 录" id="button" onclick="checkRight()" /></td>
 						</tr>
 					</table>
-				</form>
 			</div>
 		</div>
 		<div id="backgrd_top"></div>
@@ -101,14 +100,25 @@
 
 		<script>
 			function checkRight(){
+				let val = {name:$("input[name='username']").val(),
+					password:$("input[name='password']").val()}
 				$.ajax({
+					type:'POST',
 					url:"/doLogin",
-					dataType:"boolean",
-					data:{
-						name:$("input")[0],
-						password:
+					dataType:"json",
+					data: JSON.stringify(val),
+					contentType: "application/json;charset=utf-8",
+					async:false,
+					success:function (data){
+						if(data==0){
+							alert("账号或密码不正确");
+						}
+						else if(data==1){
+							window.location.href = "/homePage";
+						}
 					}
 				})
+
 			}
 
 
