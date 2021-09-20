@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>道路资料</title>
+
+    <link rel="stylesheet" type="text/css" href="/css/sharedPages.css">
+    <style>
+        #leftNav {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 300px;
+            bottom: 0;
+
+            background-color: rgb(224, 241, 251);
+        }
+
+        #rightInfo {
+            position: absolute;
+            top: 0;
+            left: 300px;
+            right: 0;
+            bottom: 0;
+
+            background-color: rgb(239, 247, 253);
+        }
+
+
+        table {
+            width: 100%;
+            border-spacing: 0;
+        }
+
+        #rightInfo table {
+            border-right: 2px solid #A5C3DF;
+            border-bottom: 2px solid #A5C3DF;
+        }
+
+        #rightInfo td {
+            border-left: 2px solid #A5C3DF;
+            border-top: 2px solid #A5C3DF;
+        }
+
+        #search .pos_rifgt {
+            text-align: right;
+        }
+
+        #search .pos_left {
+            text-align: left;
+        }
+
+        #search .pos_center {
+            text-align: center;
+        }
+
+        #search input,
+        #search select {
+            width: 150px;
+        }
+
+        #list {
+            text-align: center;
+        }
+
+        a {
+            text-decoration: none;
+            color: blue;
+        }
+
+        #pageSelect {
+            position: absolute;
+            left: 0;
+            right: 0;
+            bottom: 30px;
+            height: 30px;
+        }
+
+        #operator {
+            position: absolute;
+            left: 0;
+            right: 0;
+            bottom: 0px;
+            height: 30px;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- always show -->
+    <div id="head"><iframe src="/sharedPages/head"></iframe></div>
+    <div id="navigation"><iframe src="/sharedPages/navigation"></iframe></div>
+    <div id="status"><iframe src="/sharedPages/status"></iframe></div>
+
+    <!-- 道路资料 -->
+    <div id="main">
+        <div id="leftNav">
+            <p style="text-align: center;">道路资料</p>
+            <div
+                style="position: absolute; left: 50px; right:50px; top: 50px; height: 25px; border-bottom: 2px solid #000;">
+                <a href="/roadInformation">道路信息</a>
+            </div>
+            <div
+                style="position: absolute; left: 50px; right:50px; top: 100px; height: 25px; border-bottom: 2px solid #000;">
+                <a href="/road/documentManagement.html">文档资料</a>
+            </div>
+        </div>
+        <div id="rightInfo">
+            <p style="color: rgb(255, 106, 22);">道路信息列表</p>
+            <table id="search">
+                <tr>
+                    <td class="pos_rifgt">道路名称</td>
+                    <td class="pos_left"><input type="text"></td>
+                    <td class="pos_rifgt">道路类型</td>
+                    <td class="pos_left"><select name="" id=""></select></td>
+                    <td class="pos_rifgt">道路养护等级</td>
+                    <td class="pos_left"><select name="" id=""></select></td>
+                    <td class="pos_center" style="width: 200px;"><button>查询</button></td>
+                </tr>
+            </table>
+
+            <br>
+            <table id="list">
+                <tr style="background-color: rgb(105, 174, 224);">
+                    <td><input type="checkbox"></td>
+                    <td>道路编号</td>
+                    <td>道路名称</td>
+                    <td>道路类型</td>
+                    <td>道路养护等级</td>
+                    <td>管理单位</td>
+                </tr>
+                <tr>
+                    <td><input type="checkbox"></td>
+                    <td>768</td>
+                    <td>东湖西路</td>
+                    <td>城市快速路</td>
+                    <td>II级养护</td>
+                    <td>惠州市公用事业管理局</td>
+                </tr>
+            </table>
+
+            <div id="pageSelect" style="text-align: right;">
+                <td>
+                    <button> '《' </button>
+                    <button> '-' </button>
+                    <button> '+' </button>
+                    <button> '》' </button>
+                    第一页 共一页 | 到
+                    <input type="text" style="width: 40px;">
+                    <button>go</button>
+                </td>
+            </div>
+            <div id="operator" style="text-align: center; background-color: rgb(210, 230, 249);">
+                <td>
+                    <button>新增</button>
+                    <button>查看</button>
+                    <button>删除</button>
+                    <button>返回</button>
+                </td>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>

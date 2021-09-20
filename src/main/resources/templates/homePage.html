@@ -7,8 +7,23 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>广州省惠州市道路信息管理系统</title>
 
+    <script src="/js/jquery-3.6.0.js"></script>
+    <script type="text/javascript"
+        src="https://api.map.baidu.com/api?v=1.0&type=webgl&ak=HpA4MtzOdUZ9Ywnum4HHwtnbwcIrn0Hc">
+    </script>
+
     <link rel="stylesheet" type="text/css" href="/css/sharedPages.css">
     <style>
+        html,
+        body,
+        #map {
+            position: absolute;
+            top: 0px;
+            bottom: 0px;
+            left: 0px;
+            right: 0px;
+        }
+
         #search {
             position: absolute;
             width: 250px;
@@ -24,12 +39,17 @@
             right: 0;
         }
 
-        #mapStatus {
+        #roadInfoNavigate {
             position: absolute;
             bottom: 0;
             left: 250px;
             right: 0;
             height: 50px;
+        }
+
+        a {
+            text-decoration: none;
+            color: white;
         }
     </style>
 </head>
@@ -42,10 +62,176 @@
 
     <!-- 主页 -->
     <div id="main">
-        <div id="search"><iframe src="/frames/search"></iframe></div>
-        <div id="map"><iframe src="/frames/map"></iframe></div>
-        <div id="mapStatus"><iframe src="/frames/mapStatus"></iframe></div>
+        <div id="search">
+            <div>
+                <p style="border-bottom: 1px solid; text-align: center">请选择查询条件</p>
+            </div>
+
+            <div id="allSearch">
+                <form action="/road/">
+                    <div>
+                        <label><input type="radio" name="classification" value="1" checked onclick="">区属</label>
+                        <label><input type="radio" name="classification" value="2">管理单位</label>
+                        <label><input type="radio" name="classification" value="3">名称</label>
+                    </div>
+                    <div align="center">
+                        <select id="roadResp" style="width: 150px;">
+                            <option>-------------道路-------------</option>
+                        </select>
+                        <select id="classificationResp" style="width: 150px;">
+                            <option>-------------市区-------------</option>
+                        </select>
+                    </div>
+                    <div hidden id="roadName">
+                        道路名称:<input type="text" name="roadName" style="width: 58%; height: 20px;">
+                    </div>
+                </form>
+            </div>
+            <script>
+                $('input[type=radio][name=classification]').change(function () {
+                    let optionTOAdd;
+                    let classificationResp = $('#classificationResp');
+                    let roadName = $('#roadName');
+                    if (this.value == 1) {
+                        roadName.hide();
+                        classificationResp.show();
+                        optionTOAdd = $('<option>--------------市区-------</option>')
+                        classificationResp.empty();
+                        classificationResp.append(optionTOAdd);
+                    }
+                    if (this.value == 2) {
+                        roadName.hide();
+                        classificationResp.show();
+                        optionTOAdd = $('<option>--------管理单位-------</option>')
+                        classificationResp.empty();
+                        classificationResp.append(optionTOAdd);
+                    }
+                    if (this.value == 3) {
+                        classificationResp.hide();
+                        roadName.show();
+                    }
+                })
+            </script>
+
+            <div style="height: 5%"><button name="doSearch" type="submit" style="float: right">搜索</button><img
+                    src="/img/search.jpg" style="float: right ;height: 24px"></div>
+
+            <div style="background-color: cyan;height: 65%;width: 80%">
+                <ul>
+                    <li><a href="/homePage?searchListId=0">沙下路</a></li>
+                    <li><a href="/homePage?searchListId=1">东湖西路</a></li>
+                    <li><a href="/homePage?searchListId=2"></a></li>
+                    <li><a href="/homePage?searchListId=3"></a></li>
+                    <li><a href="/homePage?searchListId=4"></a></li>
+                    <li><a href="/homePage?searchListId=5"></a></li>
+                    <li colspan="6" align="center">
+                        <span id="page"></span>
+                        <a href="" id="firstPage">首页</a>
+                        <a href="">上一页 </a>
+                        <a href="">下一页 </a>
+                        <a href="">末页</a>
+                    </li>
+                </ul>
+                <script>
+                    let currentPage = 1;
+                    $("#firstPage").click(function () {
+                        $.ajax({
+                            url: "/allRoadPages?currentPage=" + 1,
+                            type: "get",
+                            dataType: "json",
+                            success: function (data) {
+                                console.log(data)
+                            }
+                        })
+                    });
+                </script>
+            </div>
+
+        </div>
+
+        <div id="map"></div>
+
+        <!-- 地图下方的状态栏，是用于道路信息的导航栏 -->
+        <div id="roadInfoNavigate" style="background-color: rgb(58, 165, 219);">
+            <tr style="border:0;">
+                <td><button onclick="jumpRoadInfo('roadManage')">文档管理</button></td>
+                <td><button onclick="jumpRoadInfo('dataInfo')">数据信息</button></td>
+                <td><button onclick="jumpRoadInfo('dataDelete')">数据删除</button></td>
+                <td><button onclick="jumpRoadInfo('dailyInspection')">日常巡查</button></td>
+            </tr>
+        </div>
     </div>
+
+    <script>
+        // 创建地图实例
+        let map = new BMapGL.Map("map", {
+            enableRotate: false,
+            enableTilt: false
+        });
+        // 创建点坐标
+        let point = new BMapGL.Point(114.422152, 23.117972);
+        map.enableScrollWheelZoom(true);
+        // 初始化地图，设置中心点坐标和地图级别
+        map.centerAndZoom(point, 15);
+        //创建控件，添加控件
+        let scaleCtrl = new BMapGL.ScaleControl();
+        map.addControl(scaleCtrl);
+        let opts = {
+            anchor: BMAP_ANCHOR_TOP_LEFT
+        }
+        let zoomCtrl = new BMapGL.ZoomControl(opts); // 添加缩放控件
+        map.addControl(zoomCtrl);
+    </script>
+
+
+    <script>
+        // 解析url后面参数的函数
+        function getQueryVariable(variable) {
+            var query = window.location.search.substring(1);
+            var vars = query.split("&");
+            for (var i = 0; i < vars.length; i++) {
+                var pair = vars[i].split("=");
+                if (pair[0] == variable) {
+                    return pair[1];
+                }
+            }
+            return "NULL";
+        }
+
+        // 根据searchListId获取roadId，具体取决于searchList是如何实现的
+        var roadId = getQueryVariable("searchListId");
+
+        // 跳转到对应页面
+        function jumpRoadInfo(variable) {
+            if (variable == "roadManage") {
+                window.location.href = "/roadInformation?roadId=" + roadId;
+            } else if (variable == "dataInfo") {
+
+            } else if (variable == "dataDelete") {
+
+            } else if (variable == "dailyInspection") {
+
+            }
+        }
+
+        // 显示（关闭）map下面的导航栏
+        var mapStyleBottom = document.getElementById("map").style.bottom;
+        if (getQueryVariable("searchListId") == "NULL") {
+            document.getElementById("map").style.bottom = "0";
+            document.getElementById("roadInfoNavigate").style.visibility = "hidden";
+        } else {
+            document.getElementById("map").style.bottom = mapStyleBottom;
+            document.getElementById("roadInfoNavigate").style.visibility = "visible";
+        }
+    </script>
+    <!-- <script>
+        function showMain(showId) {
+            document.getElementById("basicInfo").style.visibility = "hidden";
+            document.getElementById("imageInfo").style.visibility = "hidden";
+            document.getElementById("audioAndVideo").style.visibility = "hidden";
+            document.getElementById(showId).style.visibility = "visible";
+        }
+    </script> -->
 </body>
 
 </html>
