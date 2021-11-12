@@ -14,6 +14,7 @@ import javax.persistence.Id;
 @ToString
 @NoArgsConstructor
 @AllArgsConstructor
+
 public class RoadType {
     @Id
     private Integer id;

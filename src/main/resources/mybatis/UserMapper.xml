@@ -1,4 +1,10 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.example.rimsystem.mapper.UserMapper" >
+<mapper namespace="com.example.rimsystem.mapper.UserMapper">
+    <select id="selectUserAndRolesWithName" resultType="java.lang.String">
+        select role_name
+        from user left join sys_user_role_relation surr on user.id=surr.user_id
+        left join sys_role sr on sr.id=surr.role_id
+        where username=#{name};
+    </select>
 </mapper>

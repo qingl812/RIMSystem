@@ -18,9 +18,9 @@ public class HtmlController {
         return "homePage";
     }
 
-    @RequestMapping("/login")
+    @RequestMapping("/loginPage")
     public String logIn() {
-        return "login";
+        return "logIn";
     }
 
     @RequestMapping("/maintenanceManagement")
@@ -42,7 +42,6 @@ public class HtmlController {
     public String roadInformation() {
         return "roadInformation";
     }
-
     @RequestMapping("/systemManagement")
     public String systemManagement() {
         return "systemManagement";
@@ -67,6 +66,7 @@ public class HtmlController {
     public String head() {
         return "sharedPages/head";
     }
+
 
     @RequestMapping("/sharedPages/navigation")
     public String navigation() {

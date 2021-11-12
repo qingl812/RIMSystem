@@ -18,12 +18,10 @@ public class User {
     @Id
     private Integer id;
     private Integer account;
-    private String name;
+    private String username;
     private String password;
 //    管理单位
     private String organizationName;
-//    用户权限
-    private String userPermission;
 //        是否激活
     private Integer status;
 }

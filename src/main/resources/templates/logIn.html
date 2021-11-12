@@ -74,6 +74,7 @@
 	</head>
 
 	<body>
+	<form action="/doLogin" method="post" >
 		<div id="login">
 			<div id="loginControl">
 
@@ -88,38 +89,39 @@
 						</tr>
 						<tr>
 							<td></td>
-							<td><input type="button" value="登 录" id="button" onclick="checkRight()" /></td>
+							<td><input type="submit" value="登 录" id="button" onclick="checkRight()" /></td>
 						</tr>
 					</table>
 			</div>
 		</div>
+
 		<div id="backgrd_top"></div>
 		<div id="backgrd_bottom"></div>
 
 
 
 		<script>
-			function checkRight(){
-				let val = {name:$("input[name='username']").val(),
-					password:$("input[name='password']").val()}
-				$.ajax({
-					type:'POST',
-					url:"/doLogin",
-					dataType:"json",
-					data: JSON.stringify(val),
-					contentType: "application/json;charset=utf-8",
-					async:false,
-					success:function (data){
-						if(data==0){
-							alert("账号或密码不正确");
-						}
-						else if(data==1){
-							window.location.href = "/homePage";
-						}
-					}
-				})
-
-			}
+			// function checkRight(){
+			// 	let val = {name:$("input[name='username']").val(),
+			// 		password:$("input[name='password']").val()}
+			// 	$.ajax({
+			// 		type:'POST',
+			// 		url:"/doLogin",
+			// 		dataType:"json",
+			// 		data: JSON.stringify(val),
+			// 		contentType: "application/json;charset=utf-8",
+			// 		async:false,
+			// 		success:function (data){
+			// 			if(data==0){
+			// 				alert("账号或密码不正确");
+			// 			}
+			// 			else if(data==1){
+			// 				window.location.href = "/homePage";
+			// 			}
+			// 		}
+			// 	})
+			//
+			// }
 
 
 			function resize() {
@@ -130,6 +132,7 @@
 			window.onresize = resize;
 			window.onload = resize;
 		</script>
+	</form>
 	</body>
 
 </html>

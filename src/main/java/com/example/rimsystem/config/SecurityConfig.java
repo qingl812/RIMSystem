@@ -1,5 +1,7 @@
 package com.example.rimsystem.config;
 
+import com.example.rimsystem.seucurity.MyAuthenticationFailureHandler;
+import com.example.rimsystem.seucurity.MyAuthenticationSuccessHandler;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -25,6 +27,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     UserDetailsService userDetailsService;
     @Autowired
     PasswordEncoder passwordEncoder;
+    @Autowired
+    MyAuthenticationSuccessHandler myAuthenticationSuccessHandler;
+    @Autowired
+    MyAuthenticationFailureHandler myAuthenticationFailureHandler;
     @Bean
     public PasswordEncoder passwordEncoder(){
         return new BCryptPasswordEncoder();
@@ -35,10 +41,27 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         //配置认证方式等
         auth.userDetailsService(userDetailsService)
                 .passwordEncoder(passwordEncoder);
-        
+
+        System.out.println(passwordEncoder.encode("admin123"));
     }
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
+        http.authorizeRequests()
+                .antMatchers("/loginPage","/doLogin").permitAll()
+//                .anyRequest()
+//                .authenticated()
+                .and()
+                .formLogin().loginPage("/loginPage")
+                .loginProcessingUrl("/doLogin")
+                .usernameParameter("username")
+                .passwordParameter("password")
+                .defaultSuccessUrl("/homePage").permitAll()
+                .failureUrl("/login/error")
+                .successHandler(myAuthenticationSuccessHandler)
+                .failureHandler(myAuthenticationFailureHandler);
+
+
+        http.csrf().disable();
     }
 }
