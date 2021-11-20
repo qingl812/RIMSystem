@@ -1,5 +1,6 @@
 package com.example.rimsystem.config;
 
+import com.example.rimsystem.seucurity.MyAuthenticationEntryPoint;
 import com.example.rimsystem.seucurity.MyAuthenticationFailureHandler;
 import com.example.rimsystem.seucurity.MyAuthenticationSuccessHandler;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -7,6 +8,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -31,9 +33,17 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     MyAuthenticationSuccessHandler myAuthenticationSuccessHandler;
     @Autowired
     MyAuthenticationFailureHandler myAuthenticationFailureHandler;
+    @Autowired
+    MyAuthenticationEntryPoint myAuthenticationEntryPoint;
     @Bean
     public PasswordEncoder passwordEncoder(){
         return new BCryptPasswordEncoder();
+    }
+
+    @Override
+    public void configure(WebSecurity web) throws Exception {
+        super.configure(web);
+        web.ignoring().antMatchers("/img/**","/css/**","/js/**","/DrawingManager/**");
     }
 
     @Override
@@ -42,7 +52,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         auth.userDetailsService(userDetailsService)
                 .passwordEncoder(passwordEncoder);
 
-        System.out.println(passwordEncoder.encode("admin123"));
     }
 
     @Override
@@ -51,17 +60,24 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/loginPage","/doLogin").permitAll()
 //                .anyRequest()
 //                .authenticated()
+                .antMatchers("/homePage","/sharedPages/head","/sharedPages/status","/sharedPages/navigation")
+                .hasAnyAuthority("ROLE_ADMIN","ROLE_USER")
+                .anyRequest()
+                .authenticated()
                 .and()
                 .formLogin().loginPage("/loginPage")
                 .loginProcessingUrl("/doLogin")
                 .usernameParameter("username")
                 .passwordParameter("password")
-                .defaultSuccessUrl("/homePage").permitAll()
-                .failureUrl("/login/error")
+//                .defaultSuccessUrl("/homePage").permitAll()
+//                .failureUrl("/login/error")
                 .successHandler(myAuthenticationSuccessHandler)
-                .failureHandler(myAuthenticationFailureHandler);
-
-
+                .failureHandler(myAuthenticationFailureHandler)
+                .and()
+                .exceptionHandling()
+                .authenticationEntryPoint(myAuthenticationEntryPoint);
+//        设置可以通过iframe访问
+        http.headers().frameOptions().sameOrigin();
         http.csrf().disable();
     }
 }

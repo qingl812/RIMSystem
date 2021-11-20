@@ -78,9 +78,9 @@ public class HtmlController {
         return "sharedPages/status";
     }
 
-    @RequestMapping("/frames/map")
+    @RequestMapping("/frames/drawingManager")
     public String map() {
-        return "frames/map";
+        return "frames/drawingManager";
     }
 
     @RequestMapping("/frames/mapStatus")

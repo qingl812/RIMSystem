@@ -25,6 +25,15 @@ public class RoadServiceImpl implements RoadService {
         roadGeneralMapper.insert(road);
     }
 
+    @Override
+    public void updateCoordinateByRoadId(Integer roadId,String coordinate) {
+        roadMapper.updateCoordinateByRoadId(roadId,coordinate);
+    }
+
+    @Override
+    public String selectCoordinateById(Integer roadId) {
+        return roadMapper.selectCoordinateById(roadId);
+    }
 
     @Override
     public List<Road> selectAllPages(PageBean<Road> pageBean) {

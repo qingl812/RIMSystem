@@ -25,8 +25,9 @@ public class MyAuthenticationSuccessHandler implements AuthenticationSuccessHand
         Map user = new HashMap();
         user.put("user",principal);
         result.setData(user);
+        System.out.println(principal);
         httpServletResponse.setContentType("text/json;charset=utf-8");
         httpServletResponse.getWriter().write(new ObjectMapper().writeValueAsString(result));
-        httpServletResponse.sendRedirect("http://localhost:8080/homePage");
+        httpServletResponse.sendRedirect("/homePage");
     }
 }

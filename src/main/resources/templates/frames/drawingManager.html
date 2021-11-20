@@ -1,4 +1,4 @@
-﻿<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+﻿
 <!DOCTYPE html>
 <html>
 
@@ -22,15 +22,16 @@
             position:absolute;
             z-index:9999;
             border:1px dashed #000;
-            background-color: rgba(0,0,0,0.5)
+            background-color: rgba(0,0,0,0.5);
             opacity:0.6;
         }
     </style>
     <script type="text/javascript"
             src="http://api.map.baidu.com/api?v=2.0&ak=HpA4MtzOdUZ9Ywnum4HHwtnbwcIrn0Hc"></script>
     <!--加载鼠标绘制工具-->
-    <script type="text/javascript" src="/static/DrawingManager/DrawingManager.js"></script>
-    <link rel="stylesheet" href="/static/DrawingManager/DrawingManager.min.css"/>
+    <script type="text/javascript" src="/DrawingManager/DrawingManager.js"></script>
+    <script type="text/ecmascript" src="/js/jquery-3.6.0.js"></script>
+    <link rel="stylesheet" href="/DrawingManager/DrawingManager.min.css"/>
     <link rel="stylesheet" href="/css/mainStyle.css"/>
     <title>鼠标绘制工具</title>
 </head>
@@ -65,22 +66,24 @@
         }
     var realOverlaycomplete = function (e){
         alert("保存成功");
-        var jsonObj = {"lng":0,"lat":0};
-        var coordinate=[];
+
+        var coordinate= new Array();
 
         for(var i =0;i<path.length;i++){
+            var jsonObj = {"lng":0,"lat":0};
             jsonObj.lng= path[i].lng;
             jsonObj.lat= path[i].lat;
-            coordinate.push(jsonObj);
-            console.log(jsonObj)
+            coordinate.push(jsonObj)
+
         }
         $.ajax({
             type:"POST",
             dataType:"json",
-            url:"/road/updateCoordinate",
+            url:"/updateCoordinate",
             data:JSON.stringify(coordinate),
-            contentType:"application/json;charset=UTF-8"
+            contentType:"application/json;charset=UTF-8",
         })
+        window.location.href="/homePage";
     }
     function openDrawing() {
         if(overlays.length==1){

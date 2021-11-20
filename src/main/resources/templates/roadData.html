@@ -6,7 +6,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>道路资料</title>
-
+    <script src="/js/jquery-3.6.0.js"></script>
     <link rel="stylesheet" type="text/css" href="/css/sharedPages.css">
     <style>
         #leftNav {
@@ -144,11 +144,11 @@
 
             <div id="pageSelect" style="text-align: right;">
                 <td>
-                    <button> '《' </button>
-                    <button> '-' </button>
-                    <button> '+' </button>
-                    <button> '》' </button>
-                    第一页 共一页 | 到
+                    <button onclick="previous()"> 《 </button>
+                    <button onclick="previous()"> - </button>
+                    <button onclick="next()"> + </button>
+                    <button onclick="previous()"> 》 </button>
+                    <span id="navigatePage"></span>
                     <input type="text" style="width: 40px;">
                     <button>go</button>
                 </td>
@@ -164,5 +164,89 @@
         </div>
     </div>
 </body>
+<script>
+    let currentPage = 1;
+    let totalPage=0;
+    $.ajax({
+        url: "/allRoadPages",
+        type: "post",
+        data:JSON.stringify(currentPage),
+        dataType: "json",
+        contentType: 'application/json;charset=UTF-8',
+        success: function (data) {
+            console.log(data)
+            totalPage=data.totalPage;
+            $("#page").html(data.totalCount);
+            $.each(data.pageData,function (idx,obj) {
+                var $tr = $("<tr></tr>>");
+                var $td0 = $("<td><input type=\"checkbox\" value=\""+obj.id+"\"></td>");
+                var $td1 = $("<td>"+obj.roadNum+"</td>");
+                var $td2 = $("<td>"+obj.roadName+"</td>");
+                var $td3 = $("<td>"+obj.roadType+"</td>");
+                var $td4 = $("<td>"+obj.roadMaintenanceGrade+"</td>");
+                var $td5 = $("<td>"+obj.user.organizationName+"</td>");
+                $tr.append($td0);
+                $tr.append($td1);
+                $tr.append($td2);
+                $tr.append($td3);
+                $tr.append($td4);
+                $tr.append($td5);
+                $("#list").append($tr);
+            })
+            $("#navigatePage").empty();
+            $("#navigatePage").html("第"+currentPage+"页 共"+totalPage+"页 | 到");
+        }
+    })
+    function next() {
+        if(currentPage<totalPage){
+            currentPage++;
+        }
+        $.ajax({
+            url: "/allRoadPages",
+            type: "post",
+            data:JSON.stringify(currentPage),
+            contentType: 'application/json;charset=UTF-8',
+            dataType: "json",
+            success: function (data) {
+                $("li").remove();
+                $.each(data.pageData,function (idx,obj) {
+                    $("#roadTable").append('<li><a href=/homePage?searchListId='+obj.id+'>'+obj.roadName+'</li> ')
+                })
+                $("#navigatePage").empty();
+                $("#navigatePage").html(currentPage+"/"+totalPage)
+            }
+        })
+    }
+    function previous() {
+        if(currentPage>=2) {
+            currentPage--;
+        }
+        $.ajax({
+            url: "/allRoadPages",
+            type: "post",
+            data:JSON.stringify(currentPage),
+            contentType: 'application/json;charset=UTF-8',
+            dataType: "json",
+            success: function (data) {
+                $("li").remove();
+                $.each(data.pageData,function (idx,obj) {
+                    $("#roadTable").append('<li><a href=/homePage?searchListId='+obj.id+'>'+obj.roadName+'</li> ')
+                })
+                $("#navigatePage").empty();
+                $("#navigatePage").html(currentPage+"/"+totalPage)
+            }
+        })
+    }
+    //控件复选框只能选择一项
+    jQuery(document).ready(function() {
+        jQuery("#list input[type='checkbox']").click(function() {
+            if (jQuery(this).attr("checked") == true) {
+                jQuery("#list input[type='checkbox']").attr("checked", false);
+                jQuery(this).attr("checked", true);
+            }
+        });
+    });
+
+</script>
 
 </html>

@@ -29,6 +29,10 @@
             <result property="startLocation" column="start_location"/>
         </collection>
     </resultMap>
+    <update id="updateCoordinateByRoadId">
+        update road set road_coordinate=#{param2} where id=#{param1}
+    </update>
+
     <select id="selectOneRoad" resultMap="oneRoad">
     </select>
     <resultMap id="roadAndUser" type="com.example.rimsystem.bean.Road">
@@ -45,5 +49,8 @@
         select r.id rId,road_name,road_num,road_type,road_maintenance_grade,organization_name
         from road r LEFT JOIN user u ON r.user_id=u.id
         limit #{param1},#{param2}
+    </select>
+    <select id="selectCoordinateById" resultType="java.lang.String">
+        select road_coordinate from road where id=#{roadId}
     </select>
 </mapper>

@@ -18,18 +18,6 @@ import java.io.IOException;
 public class UserController {
     @Autowired
     UserService userService;
-//    @RequestMapping("/doLogin")
-//    @ResponseBody
-//    public int doLogin(@RequestBody User user, HttpSession session) {
-//        // 判断用户名密码是否正确
-//        User loginUser = userService.selectUserByName(user.getName(),user.getPassword());
-//        if (loginUser != null) {
-//            // 说明用户名密码正确，登录成功
-//            session.setAttribute("loginUser", loginUser);
-//            return 1;
-//        }
-//        return 0;
-//    }
 
     @RequestMapping("/logOut")
     public String doLogOut(HttpSession session){

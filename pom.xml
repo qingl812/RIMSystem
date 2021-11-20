@@ -103,6 +103,12 @@
             <artifactId>spring-security-config</artifactId>
             <version>5.1.6.RELEASE</version>
         </dependency>
+<!--thymeleaf和springsecurity整合-->
+        <dependency>
+            <groupId>org.thymeleaf.extras</groupId>
+            <artifactId>thymeleaf-extras-springsecurity5</artifactId>
+            <version>3.0.4.RELEASE</version>
+        </dependency>
 
 
         <!--JSON-->

@@ -1,11 +1,13 @@
 <!DOCTYPE html>
-<html lang="en">
-
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5"
+      xmlns:position="http://www.w3.org/1999/xhtml" xmlns:bottom="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>广州省惠州市道路信息管理系统</title>
+
 
     <script src="/js/jquery-3.6.0.js"></script>
     <script type="text/javascript"
@@ -115,32 +117,70 @@
 
             <div style="height: 5%"><button name="doSearch" type="submit" style="float: right">搜索</button><img
                     src="/img/search.jpg" style="float: right ;height: 24px"></div>
-
-            <div style="background-color: cyan;height: 65%;width: 80%">
-                <ul>
-                    <li><a href="/homePage?searchListId=0">沙下路</a></li>
-                    <li value=""><a href="/homePage?searchListId=1">东湖西路</a></li>
-                    <li><a href="/homePage?searchListId=2"></a></li>
-                    <li><a href="/homePage?searchListId=3"></a></li>
-                    <li><a href="/homePage?searchListId=4"></a></li>
-                    <li><a href="/homePage?searchListId=5"></a></li>
-                    <li colspan="6" align="center">
-                        <span id="page"></span>
-                        <a href="" id="firstPage">首页</a>
-                        <a href="">上一页 </a>
-                        <a href="">下一页 </a>
-                        <a href="">末页</a>
-                    </li>
-                </ul>
+            <div style="background-color: lightsteelblue;height: 65%;width: 80%;position:relative" id="roadTable">
+                        <div style=" bottom:0px;position:absolute">
+                            共<span id="page"></span>座
+                            <a href="javascript:void(null);" id="previousPage">上页 </a>
+                            <a href="javascript:void(null);" id="nextPage">下页 </a>
+                            <span id="navigatePage"></span>
+                        </div>
+<!--                控制分页的一个js脚本-->
                 <script>
                     let currentPage = 1;
-                    $("#firstPage").click(function () {
+                    let totalPage=0;
+                    $.ajax({
+                        url: "/allRoadPages",
+                        type: "post",
+                        data:JSON.stringify(currentPage),
+                        dataType: "json",
+                        contentType: 'application/json;charset=UTF-8',
+                        success: function (data) {
+                            totalPage=data.totalPage;
+                            $("#page").html(data.totalCount);
+                            $.each(data.pageData,function (idx,obj) {
+                                $("#roadTable").append('<li><a href=/homePage?searchListId='+obj.id+'>'+obj.roadName+'</li> ')
+                            })
+                            $("#navigatePage").empty();
+                            $("#navigatePage").html(currentPage+"/"+totalPage)
+                        }
+                    })
+                    $("#nextPage").click(function () {
+                        if(currentPage<totalPage){
+                            currentPage++;
+                        }
                         $.ajax({
-                            url: "/allRoadPages?currentPage=" + 1,
-                            type: "get",
+                            url: "/allRoadPages",
+                            type: "post",
+                            data:JSON.stringify(currentPage),
+                            contentType: 'application/json;charset=UTF-8',
                             dataType: "json",
                             success: function (data) {
-                                console.log(data)
+                                $("li").remove();
+                                $.each(data.pageData,function (idx,obj) {
+                                    $("#roadTable").append('<li><a href=/homePage?searchListId='+obj.id+'>'+obj.roadName+'</li> ')
+                                })
+                                $("#navigatePage").empty();
+                                $("#navigatePage").html(currentPage+"/"+totalPage)
+                            }
+                        })
+                    });
+                    $("#previousPage").click(function () {
+                        if(currentPage>=2) {
+                            currentPage--;
+                        }
+                        $.ajax({
+                            url: "/allRoadPages",
+                            type: "post",
+                            data:JSON.stringify(currentPage),
+                            contentType: 'application/json;charset=UTF-8',
+                            dataType: "json",
+                            success: function (data) {
+                                $("li").remove();
+                                $.each(data.pageData,function (idx,obj) {
+                                    $("#roadTable").append('<li><a href=/homePage?searchListId='+obj.id+'>'+obj.roadName+'</li> ')
+                                })
+                                $("#navigatePage").empty();
+                                $("#navigatePage").html(currentPage+"/"+totalPage)
                             }
                         })
                     });
@@ -163,6 +203,21 @@
     </div>
 
     <script>
+        // 解析url后面参数的函数
+        function getQueryVariable(variable) {
+            var query = window.location.search.substring(1);
+            var vars = query.split("&");
+            for (var i = 0; i < vars.length; i++) {
+                var pair = vars[i].split("=");
+                if (pair[0] == variable) {
+                    return pair[1];
+                }
+            }
+            return "NULL";
+        }
+        // 根据searchListId获取roadId，具体取决于searchList是如何实现的
+        var roadId = getQueryVariable("searchListId");
+
         // 创建地图实例
         let map = new BMapGL.Map("map", {
             enableRotate: false,
@@ -181,25 +236,37 @@
         }
         let zoomCtrl = new BMapGL.ZoomControl(opts); // 添加缩放控件
         map.addControl(zoomCtrl);
+        // 显示（关闭）map下面的导航栏
+        var mapStyleBottom = document.getElementById("map").style.bottom;
+        if (getQueryVariable("searchListId") == "NULL") {
+            document.getElementById("map").style.bottom = "0";
+            document.getElementById("roadInfoNavigate").style.visibility = "hidden";
+        } else {
+            document.getElementById("map").style.bottom = mapStyleBottom;
+            document.getElementById("roadInfoNavigate").style.visibility = "visible";
+            $.ajax({
+                url:"/drawLine",
+                type: "post",
+                data:JSON.stringify(roadId),
+                dataType: "json",
+                contentType: 'application/json;charset=UTF-8',
+                success:function (data) {
+                    map.clearOverlays();
+                    var points = [];
+                    $.each(data,function (idx,val) {
+                        var point1 = new BMapGL.Point(val.lng,val.lat);
+                        points.push(point1);
+                    })
+                    map.setCenter(points[0]);
+                    var polyline = new BMapGL.Polyline(points);//创建折线
+                    map.addOverlay(polyline);//将折线覆盖到地图上
+                }
+            })
+        }
     </script>
 
 
     <script>
-        // 解析url后面参数的函数
-        function getQueryVariable(variable) {
-            var query = window.location.search.substring(1);
-            var vars = query.split("&");
-            for (var i = 0; i < vars.length; i++) {
-                var pair = vars[i].split("=");
-                if (pair[0] == variable) {
-                    return pair[1];
-                }
-            }
-            return "NULL";
-        }
-
-        // 根据searchListId获取roadId，具体取决于searchList是如何实现的
-        var roadId = getQueryVariable("searchListId");
 
         // 跳转到对应页面
         function jumpRoadInfo(variable) {
@@ -214,24 +281,16 @@
             }
         }
 
-        // 显示（关闭）map下面的导航栏
-        var mapStyleBottom = document.getElementById("map").style.bottom;
-        if (getQueryVariable("searchListId") == "NULL") {
-            document.getElementById("map").style.bottom = "0";
-            document.getElementById("roadInfoNavigate").style.visibility = "hidden";
-        } else {
-            document.getElementById("map").style.bottom = mapStyleBottom;
-            document.getElementById("roadInfoNavigate").style.visibility = "visible";
-        }
+
     </script>
-    <!-- <script>
-        function showMain(showId) {
-            document.getElementById("basicInfo").style.visibility = "hidden";
-            document.getElementById("imageInfo").style.visibility = "hidden";
-            document.getElementById("audioAndVideo").style.visibility = "hidden";
-            document.getElementById(showId).style.visibility = "visible";
-        }
-    </script> -->
+<!--     <script>-->
+<!--        function showMain(showId) {-->
+<!--            document.getElementById("basicInfo").style.visibility = "hidden";-->
+<!--            document.getElementById("imageInfo").style.visibility = "hidden";-->
+<!--            document.getElementById("audioAndVideo").style.visibility = "hidden";-->
+<!--            document.getElementById(showId).style.visibility = "visible";-->
+<!--        }-->
+<!--    </script>-->
 </body>
 
 </html>
