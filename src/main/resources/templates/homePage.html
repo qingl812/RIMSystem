@@ -253,13 +253,15 @@
                 success:function (data) {
                     map.clearOverlays();
                     var points = [];
-                    $.each(data,function (idx,val) {
-                        var point1 = new BMapGL.Point(val.lng,val.lat);
-                        points.push(point1);
-                    })
-                    map.setCenter(points[0]);
-                    var polyline = new BMapGL.Polyline(points);//创建折线
-                    map.addOverlay(polyline);//将折线覆盖到地图上
+                    if(data!=null) {
+                        $.each(data, function (idx, val) {
+                            var point1 = new BMapGL.Point(val.lng, val.lat);
+                            points.push(point1);
+                        })
+                        map.setCenter(points[0]);
+                        var polyline = new BMapGL.Polyline(points);//创建折线
+                        map.addOverlay(polyline);//将折线覆盖到地图上
+                    }
                 }
             })
         }

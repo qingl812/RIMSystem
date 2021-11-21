@@ -6,12 +6,14 @@ import lombok.NoArgsConstructor;
 import lombok.ToString;
 
 import javax.persistence.Id;
+import javax.persistence.Table;
 import java.util.Map;
 
 @Data
 @ToString
 @AllArgsConstructor
 @NoArgsConstructor
+@Table(name = "branch_road")
 public class BranchRoad {
     @Id
     private Integer id;

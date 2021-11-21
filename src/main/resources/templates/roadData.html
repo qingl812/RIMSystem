@@ -101,11 +101,11 @@
             <p style="text-align: center;">道路资料</p>
             <div
                 style="position: absolute; left: 50px; right:50px; top: 50px; height: 25px; border-bottom: 2px solid #000;">
-                <a href="/roadInformation">道路信息</a>
+                <a href="/roadData">道路信息</a>
             </div>
             <div
                 style="position: absolute; left: 50px; right:50px; top: 100px; height: 25px; border-bottom: 2px solid #000;">
-                <a href="/road/documentManagement.html">文档资料</a>
+                <a href="">文档资料</a>
             </div>
         </div>
         <div id="rightInfo">
@@ -115,9 +115,16 @@
                     <td class="pos_rifgt">道路名称</td>
                     <td class="pos_left"><input type="text"></td>
                     <td class="pos_rifgt">道路类型</td>
-                    <td class="pos_left"><select name="" id=""></select></td>
+                    <td class="pos_left"><select name="" id="roadSelector">
+                        <option value="">--------请选择---------</option>
+                    </select></td>
                     <td class="pos_rifgt">道路养护等级</td>
-                    <td class="pos_left"><select name="" id=""></select></td>
+                    <td class="pos_left"><select name="maintenanceGrade">
+                        <option value="">--------请选择---------</option>
+                        <option value="">--------I等养护--------</option>
+                        <option value="">--------II等养护-------</option>
+                        <option value="">--------III等养护------</option>
+                    </select></td>
                     <td class="pos_center" style="width: 200px;"><button>查询</button></td>
                 </tr>
             </table>
@@ -125,20 +132,12 @@
             <br>
             <table id="list">
                 <tr style="background-color: rgb(105, 174, 224);">
-                    <td><input type="checkbox"></td>
+                    <td></td>
                     <td>道路编号</td>
                     <td>道路名称</td>
                     <td>道路类型</td>
                     <td>道路养护等级</td>
                     <td>管理单位</td>
-                </tr>
-                <tr>
-                    <td><input type="checkbox"></td>
-                    <td>768</td>
-                    <td>东湖西路</td>
-                    <td>城市快速路</td>
-                    <td>II级养护</td>
-                    <td>惠州市公用事业管理局</td>
                 </tr>
             </table>
 
@@ -147,18 +146,18 @@
                     <button onclick="previous()"> 《 </button>
                     <button onclick="previous()"> - </button>
                     <button onclick="next()"> + </button>
-                    <button onclick="previous()"> 》 </button>
+                    <button onclick="next()"> 》 </button>
                     <span id="navigatePage"></span>
-                    <input type="text" style="width: 40px;">
-                    <button>go</button>
+                    <input id="goPage" type="text" style="width: 40px; ">
+                    <button onclick="go()">go</button>
                 </td>
             </div>
             <div id="operator" style="text-align: center; background-color: rgb(210, 230, 249);">
                 <td>
                     <button>新增</button>
                     <button>查看</button>
-                    <button>删除</button>
-                    <button>返回</button>
+                    <button id="deleteRoad" onclick="deleteRoad()">删除</button>
+                    <button onclick="back()">返回</button>
                 </td>
             </div>
         </div>
@@ -167,6 +166,7 @@
 <script>
     let currentPage = 1;
     let totalPage=0;
+    //分页 上一页 下一页
     $.ajax({
         url: "/allRoadPages",
         type: "post",
@@ -174,12 +174,11 @@
         dataType: "json",
         contentType: 'application/json;charset=UTF-8',
         success: function (data) {
-            console.log(data)
             totalPage=data.totalPage;
             $("#page").html(data.totalCount);
             $.each(data.pageData,function (idx,obj) {
                 var $tr = $("<tr></tr>>");
-                var $td0 = $("<td><input type=\"checkbox\" value=\""+obj.id+"\"></td>");
+                var $td0 = $("<td><input name=\"myBox\" type=\"checkbox\" value=\""+obj.id+"\"></td>");
                 var $td1 = $("<td>"+obj.roadNum+"</td>");
                 var $td2 = $("<td>"+obj.roadName+"</td>");
                 var $td3 = $("<td>"+obj.roadType+"</td>");
@@ -193,6 +192,16 @@
                 $tr.append($td5);
                 $("#list").append($tr);
             })
+            $(":checkbox").each(function(){
+                $(this).click(function () {
+                    if ($(this).is(":checked")) {
+                        $(":checkbox").each(function () {
+                            $(this).prop("checked", false);
+                        });
+                        $(this).prop("checked", true);
+                    }
+                });
+            });
             $("#navigatePage").empty();
             $("#navigatePage").html("第"+currentPage+"页 共"+totalPage+"页 | 到");
         }
@@ -208,12 +217,35 @@
             contentType: 'application/json;charset=UTF-8',
             dataType: "json",
             success: function (data) {
-                $("li").remove();
+                $("#list tr:not(:first)").html("");
                 $.each(data.pageData,function (idx,obj) {
-                    $("#roadTable").append('<li><a href=/homePage?searchListId='+obj.id+'>'+obj.roadName+'</li> ')
+                    var $tr = $("<tr></tr>>");
+                    var $td0 = $("<td><input type=\"checkbox\" value=\""+obj.id+"\"></td>");
+                    var $td1 = $("<td>"+obj.roadNum+"</td>");
+                    var $td2 = $("<td>"+obj.roadName+"</td>");
+                    var $td3 = $("<td>"+obj.roadType+"</td>");
+                    var $td4 = $("<td>"+obj.roadMaintenanceGrade+"</td>");
+                    var $td5 = $("<td>"+obj.user.organizationName+"</td>");
+                    $tr.append($td0);
+                    $tr.append($td1);
+                    $tr.append($td2);
+                    $tr.append($td3);
+                    $tr.append($td4);
+                    $tr.append($td5);
+                    $("#list").append($tr);
                 })
+                $(":checkbox").each(function(){
+                    $(this).click(function () {
+                        if ($(this).is(":checked")) {
+                            $(":checkbox").each(function () {
+                                $(this).prop("checked", false);
+                            });
+                            $(this).prop("checked", true);
+                        }
+                    });
+                });
                 $("#navigatePage").empty();
-                $("#navigatePage").html(currentPage+"/"+totalPage)
+                $("#navigatePage").html("第"+currentPage+"页 共"+totalPage+"页 | 到");
             }
         })
     }
@@ -228,24 +260,121 @@
             contentType: 'application/json;charset=UTF-8',
             dataType: "json",
             success: function (data) {
-                $("li").remove();
+                $("#list tr:not(:first)").html("");
                 $.each(data.pageData,function (idx,obj) {
-                    $("#roadTable").append('<li><a href=/homePage?searchListId='+obj.id+'>'+obj.roadName+'</li> ')
+                    var $tr = $("<tr></tr>>");
+                    var $td0 = $("<td><input type=\"checkbox\" value=\""+obj.id+"\"></td>");
+                    var $td1 = $("<td>"+obj.roadNum+"</td>");
+                    var $td2 = $("<td>"+obj.roadName+"</td>");
+                    var $td3 = $("<td>"+obj.roadType+"</td>");
+                    var $td4 = $("<td>"+obj.roadMaintenanceGrade+"</td>");
+                    var $td5 = $("<td>"+obj.user.organizationName+"</td>");
+                    $tr.append($td0);
+                    $tr.append($td1);
+                    $tr.append($td2);
+                    $tr.append($td3);
+                    $tr.append($td4);
+                    $tr.append($td5);
+                    $("#list").append($tr);
                 })
+                $(":checkbox").each(function(){
+                    $(this).click(function () {
+                        if ($(this).is(":checked")) {
+                            $(":checkbox").each(function () {
+                                $(this).prop("checked", false);
+                            });
+                            $(this).prop("checked", true);
+                        }
+                    });
+                });
                 $("#navigatePage").empty();
-                $("#navigatePage").html(currentPage+"/"+totalPage)
+                $("#navigatePage").html("第"+currentPage+"页 共"+totalPage+"页 | 到");
             }
         })
     }
-    //控件复选框只能选择一项
-    jQuery(document).ready(function() {
-        jQuery("#list input[type='checkbox']").click(function() {
-            if (jQuery(this).attr("checked") == true) {
-                jQuery("#list input[type='checkbox']").attr("checked", false);
-                jQuery(this).attr("checked", true);
+//    直接路由到具体页数
+    function go() {
+        let goPage = $("#goPage").val();
+        var number = parseInt(goPage);
+        if(number>totalPage){
+            currentPage=totalPage;
+        }
+        else if(number<=0){
+            currentPage=1;
+        }
+        $.ajax({
+            url: "/allRoadPages",
+            type: "post",
+            data:JSON.stringify(currentPage),
+            dataType: "json",
+            contentType: 'application/json;charset=UTF-8',
+            success: function (data) {
+                $("#list tr:not(:first)").html("");
+                $.each(data.pageData,function (idx,obj) {
+                    var $tr = $("<tr></tr>>");
+                    var $td0 = $("<td><input name=\"myBox\" type=\"checkbox\" value=\""+obj.id+"\"></td>");
+                    var $td1 = $("<td>"+obj.roadNum+"</td>");
+                    var $td2 = $("<td>"+obj.roadName+"</td>");
+                    var $td3 = $("<td>"+obj.roadType+"</td>");
+                    var $td4 = $("<td>"+obj.roadMaintenanceGrade+"</td>");
+                    var $td5 = $("<td>"+obj.user.organizationName+"</td>");
+                    $tr.append($td0);
+                    $tr.append($td1);
+                    $tr.append($td2);
+                    $tr.append($td3);
+                    $tr.append($td4);
+                    $tr.append($td5);
+                    $("#list").append($tr);
+                    $(":checkbox").each(function(){
+                        $(this).click(function () {
+                            if ($(this).is(":checked")) {
+                                $(":checkbox").each(function () {
+                                    $(this).prop("checked", false);
+                                });
+                                $(this).prop("checked", true);
+                            }
+                        });
+                    });
+                })
+                $("#navigatePage").empty();
+                $("#navigatePage").html("第"+currentPage+"页 共"+totalPage+"页 | 到");
             }
-        });
-    });
+        })
+    }
+    function deleteRoad(){
+        if(confirm("确定删除该条道路?")){
+            var checkId = $('input[name="myBox"]:checked').val();
+            //点击确定后操作
+            $.ajax({
+                url: "/deleteRoad",
+                type: "post",
+                data:JSON.stringify(checkId),
+                dataType: "json",
+                contentType: 'application/json;charset=UTF-8',
+                success:function (data) {
+                    window.location.reload();
+                }
+            })
+        }
+    }
+    function back() {
+        window.location.href="/homePage"
+    }
+    $.ajax({
+        url:"/roadType/searchType",
+        type:"POST",
+        dataType:'json',
+        success: function (data) {
+            $.each(data,function (idx,obj) {
+                if(obj.typeId=='1'){
+                    let roadOption = "<option value="+obj.typeId+">"+obj.name+"</option>";
+                    $("#roadSelector").append(roadOption);
+                }
+            })
+        }
+    })
+
+
 
 </script>
 

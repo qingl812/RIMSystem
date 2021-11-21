@@ -14,7 +14,7 @@ public class PageBean<T> {
 //    总共多少页
     private int totalPage;
 //    一页最多几条数据
-    private int pageCount=15;
+    private int pageCount=5;
 //  总共多少条数据
     private int totalCount;
 
