@@ -1,7 +1,9 @@
 package com.example.rimsystem.controller;
 
+import com.example.rimsystem.service.RoadDocService;
 import com.example.rimsystem.seucurity.Result;
 import com.example.rimsystem.seucurity.ResultCode;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Controller;
@@ -21,6 +23,8 @@ import java.util.UUID;
 @Controller
 @RequestMapping("/api")
 public class RoadDocController {
+    @Autowired
+    RoadDocService roadDocService;
     public final static String UPLOAD_PATH_PREFIX = "static/uploadFile/";
     @PostMapping("uploadFile")
     @ResponseBody

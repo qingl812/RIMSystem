@@ -18,7 +18,6 @@ import java.io.IOException;
 public class UserController {
     @Autowired
     UserService userService;
-
     @RequestMapping("/logOut")
     public String doLogOut(HttpSession session){
         session.setAttribute("loginUser",null);
