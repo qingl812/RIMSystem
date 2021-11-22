@@ -27,13 +27,19 @@ public class RoadController {
     RoadService roadService;
     @Autowired
     RoadGeneralMapper roadGeneralMapper;
+//    删除某一条道路，包括删除他的子道路以及他的文档信息
+    @RequestMapping("/deleteRoad")
+    @ResponseBody
+    public int deleteRoadById(@RequestBody Integer roadId){
+        return roadService.deleteRoadById(roadId);
+    }
 //    点击某一条道路，在地图上绘制出他的路线
     @RequestMapping("/drawLine")
     @ResponseBody
     public List<Coordinate> drawRoadLineBySearchId(@RequestBody Integer roadId){
         String coordinateTemp = roadService.selectCoordinateById(roadId);
         List<Coordinate> coordinates = new ArrayList<>();
-        if(coordinateTemp!=null) {
+        if(coordinateTemp!=null&&coordinateTemp!="") {
             String[] split = coordinateTemp.split("#");
             for (String s : split) {
                 if (s != "") {
@@ -43,9 +49,11 @@ public class RoadController {
                 }
             }
         }
+        else {
+            return null;
+        }
         return coordinates;
     }
-
 //    用来保存地图上绘制的坐标点
     @RequestMapping("/updateCoordinate")
     @ResponseBody
