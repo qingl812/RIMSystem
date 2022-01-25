@@ -113,19 +113,19 @@
             <table id="search">
                 <tr>
                     <td class="pos_rifgt">道路名称</td>
-                    <td class="pos_left"><input type="text"></td>
+                    <td class="pos_left"><input type="text" id="selectRoadName"></td>
                     <td class="pos_rifgt">道路类型</td>
                     <td class="pos_left"><select name="" id="roadSelector">
                         <option value="">--------请选择---------</option>
                     </select></td>
                     <td class="pos_rifgt">道路养护等级</td>
-                    <td class="pos_left"><select name="maintenanceGrade">
+                    <td class="pos_left"><select name="maintenanceGrade" id="maintenanceGrade">
                         <option value="">--------请选择---------</option>
                         <option value="">--------I等养护--------</option>
                         <option value="">--------II等养护-------</option>
                         <option value="">--------III等养护------</option>
                     </select></td>
-                    <td class="pos_center" style="width: 200px;"><button>查询</button></td>
+                    <td class="pos_center" style="width: 200px;"><button onclick="">查询</button></td>
                 </tr>
             </table>
 
@@ -145,7 +145,7 @@
                 <td>
                     <button onclick="previous()"> 《 </button>
                     <button onclick="previous()"> - </button>
-                    <button onclick="next()"> + </button>
+                    <button onclick="next('/allRoadPages')"> + </button>
                     <button onclick="next()"> 》 </button>
                     <span id="navigatePage"></span>
                     <input id="goPage" type="text" style="width: 40px; ">
@@ -206,12 +206,26 @@
             $("#navigatePage").html("第"+currentPage+"页 共"+totalPage+"页 | 到");
         }
     })
-    function next() {
+    //将道路类型导入选项中
+    $.ajax({
+        url:"/roadType/searchType",
+        type:"POST",
+        dataType:'json',
+        success: function (data) {
+            $.each(data,function (idx,obj) {
+                if(obj.typeId=='1'){
+                    let roadOption = "<option >"+obj.name+"</option>";
+                    $("#roadSelector").append(roadOption);
+                }
+            })
+        }
+    })
+    function next(selectUrl) {
         if(currentPage<totalPage){
             currentPage++;
         }
         $.ajax({
-            url: "/allRoadPages",
+            url: selectUrl,
             type: "post",
             data:JSON.stringify(currentPage),
             contentType: 'application/json;charset=UTF-8',
@@ -360,19 +374,18 @@
     function back() {
         window.location.href="/homePage"
     }
-    $.ajax({
-        url:"/roadType/searchType",
-        type:"POST",
-        dataType:'json',
-        success: function (data) {
-            $.each(data,function (idx,obj) {
-                if(obj.typeId=='1'){
-                    let roadOption = "<option value="+obj.typeId+">"+obj.name+"</option>";
-                    $("#roadSelector").append(roadOption);
-                }
-            })
+    function selectInfo() {
+        var info = {
+            "currentPage":currentPage,
+            "roadName":$("#selectRoadName").val(),
+            "roadType":$("#roadSelector").find("option:selected").text(),
+            "roadMaintenance":$("#maintenanceGrade").find("option:selected").text()
         }
-    })
+        $.ajax({
+            url:"/selectOneRoad",
+
+        })
+    }
 
 
 

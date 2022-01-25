@@ -10,7 +10,8 @@ import java.util.List;
 public interface UserMapper {
 
 
-    List<String> selectUserAndRolesWithName(String s);
+    List<Role> selectUserAndRolesWithName(String s);
 
+    List<String> selectPerCodeByRoleId(List<Role> roles);
 }
 

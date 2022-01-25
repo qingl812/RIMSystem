@@ -12,4 +12,5 @@ public interface RoadMapper {
     public List<Road> selectAllPages(int index,int count);
     void updateCoordinateByRoadId(Integer roadId, String coordinate);
     String selectCoordinateById(Integer roadId);
+    List<Road> selectOneRoadByInfo(String name, String roadType, String roadMaintenance,int index,int count);
 }

@@ -1,10 +1,18 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.example.rimsystem.mapper.UserMapper">
-    <select id="selectUserAndRolesWithName" resultType="java.lang.String">
-        select role_name
+    <select id="selectUserAndRolesWithName" resultType="com.example.rimsystem.bean.Role">
+        select role_name,sr.id
         from user left join sys_user_role_relation surr on user.id=surr.user_id
         left join sys_role sr on sr.id=surr.role_id
         where username=#{name};
+    </select>
+    <select id="selectPerCodeByRoleId" resultType="java.lang.String">
+        select distinct permission_code from sys_role_permission_relation sr left join sys_permission sp
+        on sr.permission_id=sp.id
+        where sr.role_id in
+        <foreach collection="list" index="" item="roles" open="(" close=")" separator=",">
+             #{roles.id}
+        </foreach>
     </select>
 </mapper>

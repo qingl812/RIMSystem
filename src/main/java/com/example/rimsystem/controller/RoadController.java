@@ -27,6 +27,17 @@ public class RoadController {
     RoadService roadService;
     @Autowired
     RoadGeneralMapper roadGeneralMapper;
+//    根据条件查询某条道路
+    @RequestMapping("/selectOneRoad")
+    @ResponseBody
+    public PageBean<Road> selectOneRoadByInf(@RequestParam(value = "currentPage") Integer currentPage,String roadName,String roadType,String roadMaintenance)
+    {
+        PageBean pageBean = new PageBean();
+        pageBean.setCurrentPage(currentPage);
+        List list = roadService.selectOneRoadByInfo(roadName, roadType, roadMaintenance, pageBean);
+        pageBean.setPageData(list);
+        return pageBean;
+    }
 //    删除某一条道路，包括删除他的子道路以及他的文档信息
     @RequestMapping("/deleteRoad")
     @ResponseBody
@@ -59,7 +70,7 @@ public class RoadController {
     @ResponseBody
     public void updateCoordinate(@RequestBody List<Coordinate> list) {
         String coordinate = "";
-        Integer roadId = 1;
+        Integer roadId = 3;
         for (Coordinate coordinate1 : list) {
             coordinate += (coordinate1.lng + ',');
             coordinate += (coordinate1.lat + '#');

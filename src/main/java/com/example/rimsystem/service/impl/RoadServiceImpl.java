@@ -57,6 +57,21 @@ public class RoadServiceImpl implements RoadService {
     }
 
     @Override
+    public List<Road> selectOneRoadByInfo(String name, String roadType, String roadMaintenance, PageBean<Road> pageBean) {
+        Road road = new Road();
+        road.setRoadName(name);
+        road.setRoadType(roadType);
+        road.setRoadMaintenanceGrade(roadMaintenance);
+        int selectCount = roadGeneralMapper.selectCount(road);
+        pageBean.setTotalCount(selectCount);
+        int count = pageBean.getPageCount();
+        int index = (pageBean.getCurrentPage() - 1) * count;
+        List<Road> roads = roadMapper.selectOneRoadByInfo(name, roadType, roadMaintenance, index, count);
+        return roads;
+
+    }
+
+    @Override
     public List<Road> selectAllPages(PageBean<Road> pageBean) {
         Road road = new Road();
         pageBean.setTotalCount(roadGeneralMapper.selectCount(road));

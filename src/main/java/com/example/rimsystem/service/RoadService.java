@@ -13,4 +13,5 @@ public interface RoadService {
     void updateCoordinateByRoadId(@Param("roadId") Integer roadId, String coordinate);
     String selectCoordinateById(Integer roadId);
     int deleteRoadById(Integer roadId);
+    List<Road> selectOneRoadByInfo(String name, String roadType,String roadMaintenance,PageBean<Road> pageBean);
 }

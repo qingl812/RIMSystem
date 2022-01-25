@@ -40,4 +40,5 @@ public class Road {
 //    道路坐标
     private String roadCoordinate;
     private User user;
+
 }

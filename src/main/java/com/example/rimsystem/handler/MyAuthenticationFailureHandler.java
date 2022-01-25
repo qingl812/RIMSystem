@@ -1,5 +1,7 @@
-package com.example.rimsystem.seucurity;
+package com.example.rimsystem.handler;
 
+import com.example.rimsystem.seucurity.Result;
+import com.example.rimsystem.seucurity.ResultCode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.security.authentication.*;
 import org.springframework.security.core.AuthenticationException;
@@ -14,6 +16,7 @@ import java.io.IOException;
 /**
  * @auther luyu
  */
+//登录失败处理器
 @Component
 public class MyAuthenticationFailureHandler implements AuthenticationFailureHandler {
     @Override

@@ -1,5 +1,7 @@
-package com.example.rimsystem.seucurity;
+package com.example.rimsystem.handler;
 
+import com.example.rimsystem.seucurity.Result;
+import com.example.rimsystem.seucurity.ResultCode;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.json.JsonMapper;
@@ -20,6 +22,8 @@ public class MyAuthenticationEntryPoint implements AuthenticationEntryPoint {
     @Override
     public void commence(HttpServletRequest request, HttpServletResponse response, AuthenticationException e) throws IOException, ServletException, JsonProcessingException {
         Result result = Result.error(ResultCode.USER_NOT_LOGIN);
-        response.sendRedirect("/loginPage");
+        response.setContentType("text/json;charset=utf-8");
+        response.setStatus(401);
+        response.getWriter().write(new ObjectMapper().writeValueAsString(result));
     }
 }
