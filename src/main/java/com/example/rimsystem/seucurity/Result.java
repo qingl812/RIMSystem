@@ -2,6 +2,7 @@ package com.example.rimsystem.seucurity;
 import com.example.rimsystem.seucurity.ResultCode;
 import lombok.Data;
 
+import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -10,7 +11,8 @@ import java.util.Map;
  * @Description 公共结果返回
  */
 @Data
-public class Result {
+
+public class Result implements Serializable {
     private Boolean success;
     private Integer code;
     private String message;

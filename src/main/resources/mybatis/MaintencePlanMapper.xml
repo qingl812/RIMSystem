@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.example.rimsystem.mapper.PlanTKMapper">
+    <select id="selectAllPlanLimit" resultType="com.example.rimsystem.bean.MaintenancePlan">
+        select id,plan_time,total_price,is_act,is_finish
+        from maintenance_plan limit #{param1},#{param2}
+    </select>
+    <resultMap id="branchPatrolOfPlan" type="com.example.rimsystem.bean.BranchPatrol">
+        <id column="id" property="id"/>
+        <result column="location_describe" property="locationDescribe"/>
+        <result column="remark" property="remark"/>
+        <result property="finishTime" column="finish_time"/>
+        <association property="branchRoad" javaType="com.example.rimsystem.bean.BranchRoad">
+            <result column="branch_name" property="branchName"/>
+            <result column="pavement_break" property="pavementBreak"/>
+            <result column="sidewalk_brick_break" property="sidewalkBrickBreak"/>
+            <result column="blind_brick_break" property="blindBrickBreak"/>
+            <result column="curb_break" property="curbBreak"/>
+        </association>
+        <association property="patrolLog" javaType="com.example.rimsystem.bean.PatrolLog">
+            <result property="roadName" column="road_name"/>
+        </association>
+    </resultMap>
+    <select id="selectBranchPatrolsOfPlan" resultMap="branchPatrolOfPlan">
+        select bp.id,bp.branch_name,bp.location_describe,pavement_break,
+               sidewalk_brick_break,blind_brick_break,curb_break,pbpr.remark,pl.road_name,pbpr.finish_time
+        from maintenance_plan mp left join plan_branch_patrol_relation pbpr
+        on mp.id = pbpr.plan_id left join branch_patrol bp on pbpr.branch_patrol_id=bp.id
+                                 left join patrol_log pl on pl.id=bp.patrol_log_id
+        where mp.id = #{planId}
+    </select>
+</mapper>

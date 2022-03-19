@@ -1,8 +1,7 @@
 package com.example.rimsystem.service.impl;
 
-import com.example.rimsystem.bean.Road;
 import com.example.rimsystem.bean.RoadDoc;
-import com.example.rimsystem.mapper.RoadDocGeneralMapper;
+import com.example.rimsystem.mapper.RoadDocTKMapper;
 import com.example.rimsystem.mapper.RoadDocMapper;
 import com.example.rimsystem.service.RoadDocService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,7 +15,7 @@ public class RoadDocServiceImpl implements RoadDocService {
     @Autowired
     RoadDocMapper roadDocMapper;
     @Autowired
-    RoadDocGeneralMapper roadDocGeneralMapper;
+    RoadDocTKMapper roadDocTKMapper;
     @Override
     public int updateDocPath(String filePath, Integer roadId) {
             return roadDocMapper.updateDocPath(filePath,roadId);
@@ -26,7 +25,12 @@ public class RoadDocServiceImpl implements RoadDocService {
     public RoadDoc selectDocPath(Integer docId) {
         RoadDoc roadDoc = new RoadDoc();
         roadDoc.setId(docId);
-        RoadDoc docPath = roadDocGeneralMapper.selectOne(roadDoc);
+        RoadDoc docPath = roadDocTKMapper.selectOne(roadDoc);
         return docPath;
+    }
+
+    @Override
+    public void insertDoc(RoadDoc roadDoc) {
+        roadDocTKMapper.insert(roadDoc);
     }
 }

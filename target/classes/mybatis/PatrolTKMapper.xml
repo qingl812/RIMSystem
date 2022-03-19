@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.example.rimsystem.mapper.PatrolTKMapper">
+    <resultMap id="PatrolLog" type="com.example.rimsystem.bean.PatrolLog">
+        <id column="id" property="id"></id>
+        <result column="check_time" property="checkTime"></result>
+        <result column="patrol_person" property="patrolPerson"/>
+        <result column="road_id" property="roadId"/>
+        <result column="road_name" property="roadName"/>
+        <result column="weather" property="weather"/>
+    </resultMap>
+    <insert id="insertBranchPatrol">
+        insert into branch_patrol(id,patrol_log_id,branch_name,branch_id,location_describe,
+                                  pavement_break,sidewalk_brick_break,blind_brick_break,curb_break,
+                                  image_path,accessory_path)
+                                  values(null,#{patrolLogId},#{branchRoad.branchName},
+                                    #{branchRoad.id},#{locationDescribe},#{branchRoad.pavementBreak},#{branchRoad.sidewalkBrickBreak},
+                                        #{branchRoad.blindBrickBreak},#{branchRoad.curbBreak},#{imagePath},#{accessoryPath})
+
+    </insert>
+    <insert id="insertPlanAndPatrolRealtion">
+        insert into plan_branch_patrol_relation (id,branch_patrol_id,remark,plan_id)
+        values(null,#{param2},#{param3},#{param1})
+    </insert>
+
+
+    <select id="selectPatrolsByRoadId" resultMap="PatrolLog">
+        select pl.id,check_time,patrol_person,road_id,pl.road_name,weather
+        from patrol_log pl left join road r on road_id = r.id
+        where road_id = #{param1}
+        limit #{param2},#{param3}
+    </select>
+    <resultMap id="patrolOfBranch" type="com.example.rimsystem.bean.BranchPatrol">
+        <result column="patrol_log_id" property="patrolLogId"/>
+        <result column="location_describe" property="locationDescribe"/>
+        <result column="image_path" property="imagePath"/>
+        <result column="accessory_path" property="accessoryPath"/>
+        <association property="branchRoad" javaType="com.example.rimsystem.bean.BranchRoad">
+            <result column="pavement_break" property="pavementBreak"/>
+            <result column="sidewalk_brick_break" property="sidewalkBrickBreak"/>
+            <result column="blind_brick_break" property="blindBrickBreak"/>
+            <result column="curb_break" property="curbBreak"/>
+            <result column="branch_id" property="branchNum"/>
+            <result column="branch_name" property="branchName"/>
+        </association>
+    </resultMap>
+    <select id="selectPatrolOfBranchRoad" resultMap="patrolOfBranch">
+        select branch_name,branch_id,location_describe,pavement_break,sidewalk_brick_break,blind_brick_break,curb_break,image_path,accessoryPath,patrol_log_id
+        from branch_patrol where patrol_log_id = #{patrolId}
+    </select>
+    <select id="searchPatrolByTime" resultMap="PatrolLog">
+        select pl.id,check_time,patrol_person,road_id,pl.road_name,weather
+        from patrol_log pl left join road r on road_id = r.id
+        where road_id = #{param1} AND check_time between #{param3} AND #{param4}
+            limit #{param5},#{param6}
+    </select>
+
+    <resultMap id="patrolWithBranches" type="com.example.rimsystem.bean.PatrolLog">
+        <result column="road_name" property="roadName"/>
+        <result column="check_time" property="checkTime"/>
+        <collection property="branchPatrol" ofType="com.example.rimsystem.bean.BranchPatrol">
+            <id column="id" property="id"/>
+            <association property="branchRoad"  resultMap="branchAndPatrol" >
+            </association>
+        </collection>
+    </resultMap>
+
+    <resultMap id="branchAndPatrol" type="com.example.rimsystem.bean.BranchRoad">
+        <result property="branchName" column="branch_name"/>
+        <result property="id" column="branch_id"/>
+        <result column="pavement_break" property="pavementBreak"/>
+        <result column="sidewalk_brick_break" property="sidewalkBrickBreak"/>
+        <result column="blind_brick_break" property="blindBrickBreak"/>
+        <result column="curb_break" property="curbBreak"/>
+    </resultMap>
+
+    <select id="selectPatrolsAndBranchsByRoadId" resultMap="patrolWithBranches">
+        select bp.id,road_name,check_time,branch_name,pavement_break,sidewalk_brick_break,blind_brick_break,curb_break
+               from patrol_log pl right join branch_patrol bp on bp.patrol_log_id = pl.id
+                where check_time between #{param1} and #{param2}
+    </select>
+
+    <resultMap id="detail" type="com.example.rimsystem.bean.BranchPatrol">
+        <id column="id" property="id"/>
+        <result column="location_describe" property="locationDescribe"/>
+        <result column="imagePath" property="imagePath"/>
+        <result column="accessoryPath" property="accessoryPath"/>
+        <association property="branchRoad" resultMap="branchAndPatrol"/>
+        <association property="patrolLog" resultMap="onlyPatrolLog"/>
+    </resultMap>
+
+    <resultMap id="onlyPatrolLog" type="com.example.rimsystem.bean.PatrolLog">
+        <result column="check_time" property="checkTime"/>
+        <result column="patrol_person" property="patrolPerson"/>
+        <result column="weather" property="weather"/>
+        <result property="roadName" column="road_name"/>
+    </resultMap>
+
+    <select id="selectDetail" resultMap="detail">
+        select check_time,patrol_person,weather,road_name,branch_name,branch_id,location_describe,pavement_break,
+               bp.id
+               sidewalk_brick_break,blind_brick_break,curb_break
+                from branch_patrol bp left join patrol_log pl on bp.patrol_log_id = pl.id
+                where bp.id=#{branchPatrolId}
+    </select>
+
+    <resultMap id="plan" type="com.example.rimsystem.bean.MaintenancePlan">
+        <id column="id" property="id"/>
+        <collection property="branchPatrols" ofType="com.example.rimsystem.bean.BranchPatrol">
+            <association property="branchRoad" resultMap="branchAndPatrol"/>
+            <association property="patrolLog" resultMap="onlyPatrolLog"/>
+        </collection>
+    </resultMap>
+
+    <select id="selectBranchPatrolsByPlan" resultMap="plan">
+        select mp.id,pl.road_name,bp.branch_name,pavement_break,sidewalk_brick_break,blind_brick_break,curb_break
+        from maintenance_plan mp left join plan_branch_patrol_relation pbpr on mp.id=pbpr.plan_id
+        left join branch_patrol bp on bp.id = pbpr.branch_patrol_id left join patrol_log pl on bp.patrol_log_id=pl.id
+        where mp.id=#{planId}
+    </select>
+
+    <resultMap id="plansPatrol" type="com.example.rimsystem.bean.PatrolLog">
+        <result property="roadName" column="road_name"/>
+        <collection property="branchPatrol" resultMap="com.example.rimsystem.mapper.PlanTKMapper.branchPatrolOfPlan"/>
+    </resultMap>
+
+    <select id="selectOnePlansPatrol" resultMap="plansPatrol">
+        select bp.id,bp.branch_name,bp.location_describe,pavement_break,
+               sidewalk_brick_break,blind_brick_break,curb_break,pbpr.remark,pl.road_name
+        from maintenance_plan mp left join plan_branch_patrol_relation pbpr
+                                           on mp.id = pbpr.plan_id left join branch_patrol bp on pbpr.branch_patrol_id=bp.id
+                                 left join patrol_log pl on pl.id=bp.patrol_log_id
+        where mp.id = #{planId}
+    </select>
+</mapper>

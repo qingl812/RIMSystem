@@ -4,6 +4,7 @@ import com.example.rimsystem.seucurity.Result;
 import com.example.rimsystem.tool.JwtTokenUtils;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.stereotype.Component;
@@ -29,7 +30,8 @@ public class MyAuthenticationSuccessHandler implements AuthenticationSuccessHand
 //        生成jwt并将它放在请求头里面
         String jwt = jwtTokenUtils.createJWT(authentication.getName());
         httpServletResponse.setContentType("application/json;charset=utf-8");
-        httpServletResponse.setHeader("authentication",jwt);
+//        httpServletResponse.setHeader("authentication",jwt);
+        result.data("authentication",jwt);
         httpServletResponse.getWriter().write(new ObjectMapper().writeValueAsString(result));
     }
 }

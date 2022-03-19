@@ -4,6 +4,9 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.annotation.Transient;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.persistence.Table;
 import java.sql.Timestamp;
@@ -17,9 +20,13 @@ import java.sql.Timestamp;
 @NoArgsConstructor
 @Table(name = "road_doc")
 public class RoadDoc {
+    @Id
     private Integer id;
     private Integer roadId;
     private String docName;
+//    附件本身
+    @Transient
+    private MultipartFile docEntity;
 //    文档存储路径
     private String docPath;
     private String docType;

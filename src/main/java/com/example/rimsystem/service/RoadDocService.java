@@ -7,4 +7,6 @@ import org.springframework.stereotype.Service;
 public interface RoadDocService {
     int updateDocPath(String filePath,Integer roadId);
     RoadDoc selectDocPath(Integer docId);
+
+    void insertDoc(RoadDoc roadDoc);
 }

@@ -19,7 +19,7 @@ public class JwtTokenUtils {
     @Autowired
     MyAuthenticationFailureHandler failureHandler;
     private  static String key="luyuhsa"; //密钥加盐
-    private static long ttl=1000*60*60*24;   //过期时间为1天
+    private static long ttl=1000*60*60*2;   //过期时间为2小时
 
     /**
      * 生成JWT

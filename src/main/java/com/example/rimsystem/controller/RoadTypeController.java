@@ -1,5 +1,6 @@
 package com.example.rimsystem.controller;
 
+import com.example.rimsystem.annotation.Log;
 import com.example.rimsystem.bean.Road;
 import com.example.rimsystem.bean.RoadType;
 import com.example.rimsystem.service.RoadTypeService;
@@ -19,6 +20,7 @@ import java.util.List;
 public class RoadTypeController {
     @Autowired
     RoadTypeService roadTypeService;
+    @Log("搜索道路类型")
     @RequestMapping("/searchType")
     public List<RoadType> searchRoadType(){
         List<RoadType> types = roadTypeService.searchRoadType();

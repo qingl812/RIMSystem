@@ -18,6 +18,20 @@
     </properties>
 
     <dependencies>
+<!--pageHelper分页插件依赖-->
+        <dependency>
+            <groupId>com.github.pagehelper</groupId>
+            <artifactId>pagehelper-spring-boot-starter</artifactId>
+            <!-- 特别注意版本问题, 看到评论以后得以纠正 -->
+            <version>1.2.3</version>
+        </dependency>
+
+<!--        rabbitmq消息队列依赖-->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-amqp</artifactId>
+        </dependency>
+
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
@@ -112,13 +126,20 @@
             <artifactId>poi-tl</artifactId>
             <version>1.5.0</version>
         </dependency>
+<!--        spring-aop -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-aop</artifactId>
+        </dependency>
+        <!--    jsoup依赖，防止xss攻击-->
+        <dependency>
+            <groupId>org.jsoup</groupId>
+            <artifactId>jsoup</artifactId>
+            <version>1.10.2</version>
+        </dependency>
     </dependencies>
 
     <build>
-<<<<<<< HEAD
-
-=======
->>>>>>> 35592e3e0fe84435b794ce6e83713bfd523c6031
         <plugins>
             <plugin>
                 <groupId>org.springframework.boot</groupId>

@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.example.rimsystem.mapper.FundTKMapper">
+
+    <resultMap id="monthFund" type="com.example.rimsystem.bean.BranchPatrol">
+        <association property="branchRoad" javaType="com.example.rimsystem.bean.BranchRoad">
+            <result column="branch_pavement_type" property="branchPavementType"/>
+            <result column="branch_sidewalk_brick_type" property="branchSidewalkBrickType"/>
+            <result column="branch_blind_brick_type" property="branchBlindBrickType"/>
+            <result column="branch_curb_type" property="branchCurbType"/>
+            <result column="pavement_break" property="pavementBreak"/>
+            <result column="sidewalk_brick_break" property="sidewalkBrickBreak"/>
+            <result column="blind_brick_break" property="blindBrickBreak"/>
+            <result column="curb_break" property="curbBreak"/>
+        </association>
+    </resultMap>
+    <select id="selectMonthFundByPlanId" resultMap="monthFund">
+        select br.branch_pavement_type,br.branch_sidewalk_brick_type,
+        br.branch_blind_brick_type,br.branch_curb_type,
+        bp.pavement_break,bp.sidewalk_brick_break,
+        bp.blind_brick_break,bp.curb_break
+        from plan_branch_patrol_relation pbpr left join branch_patrol bp
+        on pbpr.branch_patrol_id = bp.id left join branch_road br
+        on bp.branch_id = br.id
+    </select>
+
+    <resultMap id="fundAndPlanId" type="com.example.rimsystem.bean.Fund">
+        <result property="fundName" column="fund_name"/>
+        <result property="fundTime" column="fund_time"/>
+        <result property="totalPrice" column="total_price"/>
+        <result property="organization" column="organization"/>
+        <collection property="monthFunds" ofType="com.example.rimsystem.bean.MonthFund">
+            <result property="projectName" column="project_name"/>
+            <result property="projectContent" column="project_content"/>
+            <result property="projectType" column="project_type"/>
+            <result property="unit" column="unit"/>
+            <result property="number" column="number"/>
+            <result property="unitPrice" column="unit_price"/>
+            <result property="unitTotalPrice" column="unit_total_price"/>
+        </collection>
+    </resultMap>
+    <select id="selectFundByPlanId" resultMap="fundAndPlanId">
+        select organization,fund_time,total_price,fund_name,
+               project_name,project_type,project_content,unit,
+               number,unit_price,unit_total_price
+        from fund left join month_fund on fund.id=month_fund.fund_id
+        where fund.plan_id=#{planId}
+    </select>
+</mapper>

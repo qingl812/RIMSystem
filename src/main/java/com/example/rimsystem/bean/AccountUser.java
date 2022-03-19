@@ -1,5 +1,6 @@
 package com.example.rimsystem.bean;
 
+import lombok.Data;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -12,6 +13,7 @@ import java.util.Set;
 /**
  * @auther luyu
  */
+@Data
 public class AccountUser implements UserDetails {
     private int id;
     private String password;
@@ -25,7 +27,7 @@ public class AccountUser implements UserDetails {
         this(id,username, password, true, true, true, true, authorities);
     }
 
-    public AccountUser(int id,String username, String password, boolean enabled, boolean accountNonExpired, boolean credentialsNonExpired, boolean accountNonLocked, Collection<? extends GrantedAuthority> authorities) {
+    public AccountUser(int id,String username, String password,boolean enabled, boolean accountNonExpired, boolean credentialsNonExpired, boolean accountNonLocked, Collection<? extends GrantedAuthority> authorities) {
         Assert.isTrue(username != null && !"".equals(username) && password != null, "Cannot pass null or empty values to constructor");
         this.id=id;
         this.username = username;

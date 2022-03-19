@@ -4,6 +4,8 @@ public enum ResultCode implements CustomizeResultCode{
     /* 成功 */
     SUCCESS(200, "成功"),
 
+    IPMUCH(300,"ip访问频繁"),
+
     /* 默认失败 */
     COMMON_FAIL(999, "失败"),
 
@@ -16,11 +18,11 @@ public enum ResultCode implements CustomizeResultCode{
     /* 用户错误 */
     USER_NOT_LOGIN(2001, "用户未登录"),
     USER_ACCOUNT_EXPIRED(2002, "账号已过期"),
-    USER_CREDENTIALS_ERROR(2003, "密码错误"),
+    USER_CREDENTIALS_ERROR(2003, "账号或者密码错误"),
     USER_CREDENTIALS_EXPIRED(2004, "密码过期"),
     USER_ACCOUNT_DISABLE(2005, "账号不可用"),
     USER_ACCOUNT_LOCKED(2006, "账号被锁定"),
-    USER_ACCOUNT_NOT_EXIST(2007, "账号不存在"),
+    USER_ACCOUNT_NOT_EXIST(2007, "账号或者密码错误"),
     USER_ACCOUNT_ALREADY_EXIST(2008, "账号已存在"),
     USER_ACCOUNT_USE_BY_OTHERS(2009, "您的登录已经超时或者已经在另一台机器登录，您被迫下线"),
 

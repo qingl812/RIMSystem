@@ -18,17 +18,6 @@ import java.io.IOException;
 public class UserController {
     @Autowired
     UserService userService;
-    @RequestMapping("/logOut")
-    public String doLogOut(HttpSession session){
-        session.setAttribute("loginUser",null);
-        return "logIn";
-    }
-//    @RequestMapping("/checkUser")
-//    @ResponseBody
-//    public User checkUser(HttpSession session){
-//        User loginUser = (User)session.getAttribute("loginUser");
-//        return loginUser;
-//    }
     @RequestMapping("/login/error")
     public void loginError(HttpServletRequest request, HttpServletResponse response) {
         response.setContentType("text/html;charset=utf-8");

@@ -23,7 +23,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
     private final static String[] URL_WHITE_LIST = {
-        "/login", "/logout"
+        "/api/login", "/api/logout"
     };
 
     @Autowired
@@ -69,6 +69,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
 //                登录配置
                 .formLogin()
+                .loginProcessingUrl("/api/login")
                 .failureHandler(myAuthenticationFailureHandler)
                 .successHandler(myAuthenticationSuccessHandler)
                 .and()

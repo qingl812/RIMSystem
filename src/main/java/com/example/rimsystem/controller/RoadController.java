@@ -1,38 +1,56 @@
 package com.example.rimsystem.controller;
 
+import com.alibaba.fastjson.JSONObject;
 import com.example.rimsystem.bean.PageBean;
 import com.example.rimsystem.bean.Road;
-import com.example.rimsystem.mapper.RoadGeneralMapper;
+import com.example.rimsystem.mapper.RoadTKMapper;
 import com.example.rimsystem.service.RoadService;
+import com.example.rimsystem.seucurity.Result;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
-import org.springframework.http.HttpRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
+import java.util.Enumeration;
+import java.util.HashMap;
 import java.util.List;
 
-@Controller
+@RestController
 public class RoadController {
     @Autowired
     RoadService roadService;
     @Autowired
-    RoadGeneralMapper roadGeneralMapper;
+    RoadTKMapper roadTKMapper;
+
+    @RequestMapping("/selectRoadDetail")
+    public Result selectRoadDetail(@RequestBody JSONObject jsonObject){
+        Integer roadId = jsonObject.getInteger("roadId");
+        Road road = roadService.selectRoadDetail(roadId);
+        return Result.ok().data("road",road);
+    }
+
 //    根据条件查询某条道路
-    @RequestMapping("/selectOneRoad")
+    @RequestMapping("/api/road_info_list")
     @ResponseBody
-    public PageBean<Road> selectOneRoadByInf(@RequestParam(value = "currentPage") Integer currentPage,String roadName,String roadType,String roadMaintenance)
+    public PageBean<Road> selectOneRoadByInf(@RequestBody HashMap map)
     {
+        Integer currentPage = (Integer) map.get("currentPage");
+        String roadName = (String) map.get("roadName");
+        String roadType = (String) map.get("roadType");
+        String roadMaintenance = (String) map.get("roadMaintenance");
+        Integer pageSize = (Integer) map.get("pageSize");
+        System.out.println(currentPage);
+        System.out.println(roadMaintenance);
+        System.out.println(roadType);
+        System.out.println(roadName);
+        System.out.println(pageSize);
         PageBean pageBean = new PageBean();
+        pageBean.setPageCount(5);
         pageBean.setCurrentPage(currentPage);
         List list = roadService.selectOneRoadByInfo(roadName, roadType, roadMaintenance, pageBean);
         pageBean.setPageData(list);
@@ -77,7 +95,7 @@ public class RoadController {
         }
         roadService.updateCoordinateByRoadId(roadId,coordinate);
     }
-//前端发送过来页数，后端进行分页，并将数据传递向前端
+//前端发送过来页数，后端进行分页，并将数据传递向前端,功能为查询一页上所有的数据
     @RequestMapping("/allRoadPages")
     @ResponseBody
     public PageBean<Road> allNotePages(@RequestBody Integer currentPage) {

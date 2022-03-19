@@ -1,7 +1,11 @@
 package com.example.rimsystem.controller;
 
+import com.example.rimsystem.annotation.Log;
 import com.example.rimsystem.bean.RoadDoc;
+import com.example.rimsystem.bean.RoadPicture;
+import com.example.rimsystem.bean.Table;
 import com.example.rimsystem.service.RoadDocService;
+import com.example.rimsystem.service.RoadService;
 import com.example.rimsystem.seucurity.Result;
 import com.example.rimsystem.seucurity.ResultCode;
 import com.example.rimsystem.tool.DocUtils;
@@ -9,7 +13,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Controller;
+import org.springframework.util.ClassUtils;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
@@ -31,21 +37,47 @@ import java.util.UUID;
 public class RoadDocController {
     @Autowired
     RoadDocService roadDocService;
+    @Autowired
+    RoadService roadService;
     public final static String UPLOAD_PATH_PREFIX = "static/uploadFile/";
-//    上传各种附件
-    @PostMapping("/uploadFile")
+    @PostMapping("uploadPicture")
     @ResponseBody
-    public Result uploadFile(HttpServletRequest request, MultipartFile uploadFile, Authentication authentication){
+    @Log("上传照片")
+    public Result uploadPicture(RoadPicture roadPicture){
+        MultipartFile pictureEntity = roadPicture.getPictureEntity();
+        if(pictureEntity.isEmpty()){
+            return Result.error(ResultCode.PARAM_IS_BLANK);
+        }
+        String realPath = ClassUtils.getDefaultClassLoader().getResource("").getPath()+UPLOAD_PATH_PREFIX;
+        File file = new File(realPath+roadPicture.getRoadId()+'/'+"img"+'/');
+        if(!file.isDirectory()){
+            file.mkdirs();
+        }
+        String oldName = pictureEntity.getOriginalFilename();
+        String newName = UUID.randomUUID().toString()+oldName.substring(oldName.lastIndexOf("."),oldName.length());
+        try {
+            File newFile = new File(file.getAbsolutePath()+File.separator+newName);
+            pictureEntity.transferTo(newFile);
+            roadPicture.setPicturePath(file.getAbsolutePath()+File.separator+newName);
+            roadService.insertPicture(roadPicture);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return Result.ok();
+    }
+//    上传各种附件,除了图片附件以外
+    @PostMapping("/uploadFile")
+    @Log("上传附件")
+    @ResponseBody
+    public Result uploadFile(RoadDoc roadDoc){
+        MultipartFile uploadFile = roadDoc.getDocEntity();
         if(uploadFile.isEmpty()){
             //返回选择文件提示
             return Result.error(ResultCode.PARAM_IS_BLANK);
         }
-//        获取spring security中登录的用户名
-        User principal = (User)authentication.getPrincipal();
-        String username = principal.getUsername()+'/';
-        String realPath = new String("src/main/resources/" + UPLOAD_PATH_PREFIX);
+        String realPath = ClassUtils.getDefaultClassLoader().getResource("").getPath()+UPLOAD_PATH_PREFIX;
 //        给每一个用户都创建一个文件夹来存放他上传的文件
-        File file = new File(realPath + username);
+        File file = new File(realPath + roadDoc.getRoadId()+'/'+"doc"+'/');
         if(!file.isDirectory()){
             //递归生成文件夹
             file.mkdirs();
@@ -56,6 +88,8 @@ public class RoadDocController {
         try {
             File newFile = new File(file.getAbsolutePath()+File.separator+newName);
             uploadFile.transferTo(newFile);
+            roadDoc.setDocPath(file.getAbsolutePath()+File.separator+newName);
+            roadDocService.insertDoc(roadDoc);
             return Result.ok();
         } catch (IOException e) {
             e.printStackTrace();
@@ -93,15 +127,36 @@ public class RoadDocController {
         }
     }
 //    将文件转为word形式，下载。将信息保存到word中供下载
+    /*
+     *将文件转化为word 在道路检测阶段
+     */
     @RequestMapping("/downloadWord")
-    public void downloadWord(HttpServletResponse response) throws IOException {
+    @Log("下载附件")
+    public void downloadWord(@RequestBody Table table, HttpServletResponse response) throws IOException {
         String newWordName = new SimpleDateFormat("yyyyMMddHHmm").format(new Date())+".docx";
         newWordName = URLEncoder.encode(newWordName, "utf-8"); //这里要用URLEncoder转下才能正确显示中文名称
         response.addHeader("Content-Disposition", "attachment;filename=" + newWordName+"");
         response.setContentType("application/octet-stream");
         Map dataMap = new HashMap();
-        dataMap.put("number","k001");
-        dataMap.put("projectName","一个大工程");
+        dataMap.put("projectName",table.getProjectName());
+        dataMap.put("projectType",table.getProjectType());
+        dataMap.put("projectAddress",table.getProjectAddress());
+        dataMap.put("projectPrice",table.getProjectPrice());
+        dataMap.put("person1",table.getResponsible_person1());
+        dataMap.put("person2",table.getResponsible_person2());
+        dataMap.put("projectContent",table.getProjectDetail());
+        dataMap.put("projectAdvise",table.getAdvise());
+        dataMap.put("projectUnit",table.getConstruction());
+        SimpleDateFormat df = new SimpleDateFormat("yyyy/MM/dd");
+        Date date = new Date(table.getApproveTime().getTime());
+        String format = df.format(date);
+        dataMap.put("approveTime",format);
+        date.setTime(table.getStartTime().getTime());
+        format = df.format(date);
+        dataMap.put("startTime",format);
+        date.setTime(table.getEndTime().getTime());
+        format = df.format(date);
+        dataMap.put("endTime",format);
         DocUtils.downloadDoc(response.getOutputStream(), newWordName,"/docTemplates/template1.docx",dataMap);
     }
 

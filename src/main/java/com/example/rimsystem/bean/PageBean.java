@@ -10,13 +10,13 @@ import java.util.List;
 @ToString
 public class PageBean<T> {
 //    当前页
-    private int currentPage=1;
+    private Integer currentPage=1;
 //    总共多少页
-    private int totalPage;
+    private Integer totalPage;
 //    一页最多几条数据
-    private int pageCount=5;
+    private Integer pageCount=5;
 //  总共多少条数据
-    private int totalCount;
+    private Integer totalCount;
 
     private List<T> pageData;
 

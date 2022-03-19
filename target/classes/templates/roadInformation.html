@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>道路资料</title>
+
+    <script src="/js/jquery-3.6.0.js"></script>
+    <link rel="stylesheet" type="text/css" href="/css/sharedPages.css">
+    <style>
+        #roadInfoSelect {
+            position: absolute;
+            left: 0;
+            width: 250px;
+            top: 0;
+            bottom: 0;
+        }
+
+        #roadInfoWrite {
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            left: 250px;
+            right: 0;
+        }
+
+        li {
+            list-style-type: none;
+        }
+
+
+        /* 防止input超出单元格 */
+        input {
+            -webkit-box-sizing: border-box;
+            -moz-box-sizing: border-box;
+            box-sizing: border-box;
+        }
+
+        input,
+        select {
+            width: 100%;
+        }
+
+        table {
+            background-color: rgb(237, 247, 255);
+            width: 100%;
+            height: 100%;
+            float: left;
+        }
+
+        td {
+            border: 1px solid #9BCCFD;
+        }
+
+        td,
+        td+td+td {
+            text-align: right;
+        }
+
+        td+td,
+        td+td+td+td {
+            text-align: left;
+        }
+
+        #basicInfo,
+        #imageInfo,
+        #audioAndVideo {
+            position: absolute;
+            top: 40px;
+            left: 0px;
+            right: 0px;
+        }
+
+
+        #menu li {
+            list-style-type: none;
+            margin-left: 20px;
+        }
+
+        #menu ul {
+            margin: 0;
+            padding: 0;
+        }
+
+        #menu .branchRoad,
+        #menu .road {
+            width: 20px;
+            height: 20px;
+            font-style: 20px;
+            line-height: 20px;
+            text-align: center;
+            display: inline-block;
+            margin-left: -20px;
+        }
+
+        #menu .on {
+            transform: rotate(90deg);
+        }
+
+        #menu>ul ul {
+            display: none;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- always show -->
+    <div id="head"><iframe src="/sharedPages/head"></iframe></div>
+    <div id="navigation"><iframe src="/sharedPages/navigation"></iframe></div>
+    <div id="status"><iframe src="/sharedPages/status"></iframe></div>
+
+    <!-- 道路资料 -->
+    <div id="main">
+        <div id="roadInfoSelect" style="background-color: rgb(229, 243, 252);">
+
+            <div style="text-align: center; height: 30px;">请选择下面的树</div>
+            <div class="buttonSet" style="width: 30px; height: 120px;">
+                <a href=""><img width="30px" height="30px" src="/img/roundPlus.png"></a>
+                <a href=""><img width="30px" height="30px" src="/img/roundMinus.png"></a>
+                <a href=""><img width="30px" height="30px" src="/img/minusSign.png"></a>
+                <a href=""><img width="30px" height="30px" src="/img/plusSign.png"></a>
+            </div>
+            <div id="menu" style="position: absolute; left: 30px; right: 0px; top: 30px;">
+                <ul>
+                    <li><span class="road">＞</span><a href="">沙下路</a>
+                        <ul>
+                            <li><span class="branchRoad">＞</span><a href="">沙下路A</a>
+                                <ul>
+                                    <li><a href="">道路信息位置</a></li>
+                                    <li><a href="">基本资料库</a></li>
+                                </ul>
+                            </li>
+                            <li><span class="branchRoad">＞</span><a href="">沙下路B</a>
+                                <ul>
+                                    <li><a href="">道路信息位置</a></li>
+                                    <li><a href="">基本资料库</a></li>
+                                </ul>
+                            </li>
+                            <li><span class="branchRoad">＞</span><a href="">沙下路C</a>
+                                <ul>
+                                    <li><a href="">道路信息位置</a></li>
+                                    <li><a href="">基本资料库</a></li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <div id="roadInfoWrite">
+            <div style="position: absolute; top: 0; left: 0; right: 0;">
+                <button onclick="showBasicInfo('basicInfo')">基本信息</button>
+                <button onclick="showBasicInfo('imageInfo')">图片信息</button>
+                <button onclick="showBasicInfo('audioAndVideo')">录音录像</button>
+            </div>
+
+            <div id="basicInfo" style="visibility: visible;">
+                <table border="0" cellspacing="0" cellpadding="0">
+                    <tr style="background-color: rgb(102, 169, 222);">
+                        <td colspan="4" style="text-align: center;">基本信息</td>
+                    </tr>
+                    <tr>
+                        <td style="width: 200px;">道路名称</td>
+                        <td>
+                            <input type=" text" value="沙下路" />
+                        </td>
+                        <td style="width: 200px;">道路编号</td>
+                        <td>
+                            <input type="text" value="333" />
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>道路类型</td>
+                        <td>
+                            <select id="roadSelector">
+                            </select>
+                        </td>
+                        <td>道路养护等级</td>
+                        <td>
+                            <select>
+                                <option>III等养护</option>
+                            </select>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>道路总长</td>
+                        <td>
+                            <input type="text" value="2000" />
+                        </td>
+                        <td>道路分段数</td>
+                        <td>
+                            <input type="text" value="3" />
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>道路路面类型</td>
+                        <td>
+                            <select id="roadPavementSelector">
+
+                            </select>
+                        </td>
+                        <td>人行道面砖类型</td>
+                        <td>
+                            <select id="sidewalkBrickSelector">
+                            </select>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>盲道面砖类型</td>
+                        <td>
+                            <select id="blindBrickSelector">
+
+                            </select>
+                        </td>
+                        <td>路缘石（侧石）类型</td>
+                        <td>
+                            <select id="curbSelector">
+                            </select>
+                        </td>
+                    </tr>
+                    <tr style="background-color: rgb(207, 230, 253);">
+                        <td colspan="4" style="text-align: center;">保存</td>
+                    </tr>
+                </table>
+            </div>
+
+            <div id="imageInfo" style="visibility: hidden;">
+                图片信息
+            </div>
+
+            <div id="audioAndVideo" style="visibility: hidden;">
+                录音录像
+            </div>
+        </div>
+    </div>
+
+    <script>
+        $.ajax({
+            url:"/roadType/searchType",
+            type:"POST",
+            dataType:'json',
+            success: function (data) {
+                $.each(data,function (idx,obj) {
+                    if(obj.typeId=='1'){
+                        let roadOption = "<option value="+obj.typeId+">"+obj.name+"</option>";
+                        $("#roadSelector").append(roadOption);
+                    }
+                    else if(obj.typeId=='2'){
+                        let roadOption = "<option value="+obj.typeId+">"+obj.name+"</option>";
+                        $("#roadPavementSelector").append(roadOption);
+                    }
+                    else if(obj.typeId=='3'){
+                        let roadOption = "<option value="+obj.typeId+">"+obj.name+"</option>";
+                        $("#sidewalkBrickSelector").append(roadOption);
+                    }
+                    else if(obj.typeId=='4'){
+                        let roadOption = "<option value="+obj.typeId+">"+obj.name+"</option>";
+                        $("#blindBrickSelector").append(roadOption);
+                    }
+                    else if(obj.typeId=='5'){
+                        let roadOption = "<option value="+obj.typeId+">"+obj.name+"</option>";
+                        $("#curbSelector").append(roadOption);
+                    }
+                })
+                console.log(data);
+            }
+        })
+
+    </script>
+
+    <script>
+        function showBasicInfo(showId) {
+            document.getElementById("basicInfo").style.visibility = "hidden";
+            document.getElementById("imageInfo").style.visibility = "hidden";
+            document.getElementById("audioAndVideo").style.visibility = "hidden";
+            document.getElementById(showId).style.visibility = "visible";
+        }
+    </script>
+    <script>
+        $(document).ready(function () {
+            $(".road").next().next().toggle();
+            $(function () {
+                $("#menu").on("click", ".branchRoad", function (event) {
+                    $(this).toggleClass("on").next().next().toggle();
+                });
+            });
+        });
+    </script>
+</body>
+
+</html>

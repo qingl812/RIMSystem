@@ -15,6 +15,10 @@ import java.util.Map;
 @NoArgsConstructor
 @Table(name = "branch_road")
 public class BranchRoad {
+    public String getBranchName() {
+        return branchName;
+    }
+
     @Id
     private Integer id;
     private Integer branchNum;
@@ -36,6 +40,15 @@ public class BranchRoad {
     private String remark;
     //    外键
     private Integer roadId;
+//    路面破损面积
+    private Double pavementBreak;
+//    人行道面砖破损
+    private Double sidewalkBrickBreak;
+//  盲道面破损面积
+    private Double blindBrickBreak;
+//    路缘石（侧石）破损面积
+    private Double curbBreak;
+
     public BranchRoad(String branchName,Integer branchNum,Double branchLength,Integer roadId){
         this.branchName=branchName;
         this.branchNum=branchNum;

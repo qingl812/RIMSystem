@@ -1,16 +1,11 @@
 package com.example.rimsystem.service.impl;
 
-import com.example.rimsystem.bean.BranchRoad;
-import com.example.rimsystem.bean.PageBean;
-import com.example.rimsystem.bean.Road;
-import com.example.rimsystem.bean.RoadDoc;
-import com.example.rimsystem.mapper.BranchRoadGeneralMapper;
-import com.example.rimsystem.mapper.RoadDocGeneralMapper;
-import com.example.rimsystem.mapper.RoadGeneralMapper;
-import com.example.rimsystem.mapper.RoadMapper;
+import com.example.rimsystem.bean.*;
+import com.example.rimsystem.mapper.*;
 import com.example.rimsystem.service.RoadService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -20,16 +15,33 @@ import java.util.List;
 @Service
 public class RoadServiceImpl implements RoadService {
     @Autowired
-    RoadGeneralMapper roadGeneralMapper;
+    RoadTKMapper roadTKMapper;
     @Autowired
     BranchRoadGeneralMapper branchRoadGeneralMapper;
     @Autowired
     RoadMapper roadMapper;
     @Autowired
-    RoadDocGeneralMapper roadDocGeneralMapper;
+    RoadDocTKMapper roadDocTKMapper;
+    @Autowired
+    RoadPicMapper roadPicMapper;
+
+    @Override
+    public Road selectRoadDetail(Integer roadId) {
+        Road road = new Road();
+        road.setId(roadId);
+        return roadTKMapper.selectOne(road);
+    }
+
+    @Transactional(rollbackFor = {RuntimeException.class,Exception.class})
+    @Override
+    public void insertPicture(RoadPicture roadPicture) {
+        roadPicMapper.insert(roadPicture);
+        roadPicMapper.insertRoadAndPicRelation(roadPicture);
+    }
+
     @Override
     public void insertOneRoad(Road road) {
-        roadGeneralMapper.insert(road);
+        roadTKMapper.insert(road);
     }
 
     @Override
@@ -46,13 +58,13 @@ public class RoadServiceImpl implements RoadService {
     public int deleteRoadById(Integer roadId) {
         Road road = new Road();
         road.setId(roadId);
-        int delete1 = roadGeneralMapper.delete(road);
+        int delete1 = roadTKMapper.delete(road);
         BranchRoad branchRoad = new BranchRoad();
         branchRoad.setRoadId(roadId);
         int delete2 = branchRoadGeneralMapper.delete(branchRoad);
         RoadDoc roadDoc = new RoadDoc();
         roadDoc.setRoadId(roadId);
-        int delete = roadDocGeneralMapper.delete(roadDoc);
+        int delete = roadDocTKMapper.delete(roadDoc);
         return delete+delete1+delete2;
     }
 
@@ -62,7 +74,7 @@ public class RoadServiceImpl implements RoadService {
         road.setRoadName(name);
         road.setRoadType(roadType);
         road.setRoadMaintenanceGrade(roadMaintenance);
-        int selectCount = roadGeneralMapper.selectCount(road);
+        int selectCount = roadTKMapper.selectCount(road);
         pageBean.setTotalCount(selectCount);
         int count = pageBean.getPageCount();
         int index = (pageBean.getCurrentPage() - 1) * count;
@@ -74,7 +86,7 @@ public class RoadServiceImpl implements RoadService {
     @Override
     public List<Road> selectAllPages(PageBean<Road> pageBean) {
         Road road = new Road();
-        pageBean.setTotalCount(roadGeneralMapper.selectCount(road));
+        pageBean.setTotalCount(roadTKMapper.selectCount(road));
         if (pageBean.getCurrentPage() == 0) {
             pageBean.setCurrentPage(1);
         }
