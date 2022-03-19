@@ -36,9 +36,11 @@ public class Road {
 //    路缘石（侧石）类型
     private String curbType;
 //    某个主道路的各个支路
+    @Transient
     private List<BranchRoad> branchRoads;
 //    道路坐标
     private String roadCoordinate;
+    @Transient
     private User user;
 
 }

@@ -18,11 +18,20 @@
     </properties>
 
     <dependencies>
+<!--        swaggaer接口文档依赖-->
+        <dependency>
+            <groupId>com.spring4all</groupId>
+            <artifactId>swagger-spring-boot-starter</artifactId>
+            <version>1.9.0.RELEASE</version>
+        </dependency>
+
+
+
 <!--pageHelper分页插件依赖-->
         <dependency>
             <groupId>com.github.pagehelper</groupId>
             <artifactId>pagehelper-spring-boot-starter</artifactId>
-            <!-- 特别注意版本问题, 看到评论以后得以纠正 -->
+            <!-- 特别注意版本问题-->
             <version>1.2.3</version>
         </dependency>
 

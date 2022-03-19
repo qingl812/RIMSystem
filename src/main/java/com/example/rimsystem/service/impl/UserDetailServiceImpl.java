@@ -1,10 +1,13 @@
 package com.example.rimsystem.service.impl;
 
+import com.alibaba.fastjson.JSONObject;
 import com.example.rimsystem.bean.AccountUser;
 import com.example.rimsystem.mapper.UserGeneralMapper;
 import com.example.rimsystem.mapper.UserMapper;
 import com.example.rimsystem.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.security.authentication.DisabledException;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -16,6 +19,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 
 /**
@@ -27,8 +31,10 @@ public class UserDetailServiceImpl implements UserDetailsService {
     private UserGeneralMapper userGeneralMapper;
     @Autowired
     private UserService userService;
+    @Autowired
+    private RedisTemplate<String,String> redisTemplate;
     @Override
-    public UserDetails loadUserByUsername(String s) throws UsernameNotFoundException {
+    public UserDetails loadUserByUsername(String s) throws UsernameNotFoundException,DisabledException {
         if(s==null||s.equals("")){
             throw  new RuntimeException("账号不能为空");
         }
@@ -41,6 +47,12 @@ public class UserDetailServiceImpl implements UserDetailsService {
         }
         else {
             authorities = getRoleStringToList(s);
+        }
+
+        String userJson = JSONObject.toJSONString(selectOne);
+        String s1 = redisTemplate.opsForValue().get("uid:" + selectOne.getId());
+        if(s1==""||s1==null){
+            redisTemplate.opsForValue().set("uid:" + selectOne.getId(), userJson, 3, TimeUnit.HOURS);
         }
         return new AccountUser(selectOne.getId(),selectOne.getUsername(),selectOne.getPassword(), authorities);
 

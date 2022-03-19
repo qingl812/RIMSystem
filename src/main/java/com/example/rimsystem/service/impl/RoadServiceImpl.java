@@ -6,6 +6,7 @@ import com.example.rimsystem.service.RoadService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import tk.mybatis.mapper.entity.Example;
 
 import java.util.List;
 
@@ -24,6 +25,14 @@ public class RoadServiceImpl implements RoadService {
     RoadDocTKMapper roadDocTKMapper;
     @Autowired
     RoadPicMapper roadPicMapper;
+
+    @Override
+    public void updateRoadDetail(Road road) {
+        Example example = new Example(Road.class);
+        Example.Criteria criteria = example.createCriteria();
+        criteria.andEqualTo("id",road.getId());
+        roadTKMapper.updateByExampleSelective(road,example);
+    }
 
     @Override
     public Road selectRoadDetail(Integer roadId) {

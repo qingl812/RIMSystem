@@ -33,7 +33,7 @@ public class MyAuthenticationFailureHandler implements AuthenticationFailureHand
             result = Result.error(ResultCode.USER_CREDENTIALS_EXPIRED);
         } else if (e instanceof DisabledException) {
             //账号不可用
-            result = Result.error(ResultCode.USER_ACCOUNT_DISABLE);
+            result = Result.error(ResultCode.USER_ACCOUNT_DISABLE).message(e.getMessage());
         } else if (e instanceof LockedException) {
             //账号锁定
             result = Result.error(ResultCode.USER_ACCOUNT_LOCKED);

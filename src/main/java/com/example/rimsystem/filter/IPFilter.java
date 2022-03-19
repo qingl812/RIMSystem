@@ -26,9 +26,9 @@ public class IPFilter implements Filter {
 
     /**
      * 用户连续访问最高阀值，超过该值则认定为恶意操作的IP，进行限制
-     * 连续访问20次出问题
+     * 连续访问300次出问题
      */
-    private static final int LIMIT_NUMBER = 20;
+    private static final int LIMIT_NUMBER = 300;
 
     /**
      * 用户访问最小安全时间，在该时间内如果访问次数大于阀值，则记录为恶意IP，否则视为正常访问

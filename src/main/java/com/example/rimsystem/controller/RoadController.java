@@ -6,6 +6,9 @@ import com.example.rimsystem.bean.Road;
 import com.example.rimsystem.mapper.RoadTKMapper;
 import com.example.rimsystem.service.RoadService;
 import com.example.rimsystem.seucurity.Result;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -21,14 +24,22 @@ import java.util.HashMap;
 import java.util.List;
 
 @RestController
+@Api(tags = "关于主路的api")
 public class RoadController {
     @Autowired
     RoadService roadService;
     @Autowired
     RoadTKMapper roadTKMapper;
 
-    @RequestMapping("/selectRoadDetail")
-    public Result selectRoadDetail(@RequestBody JSONObject jsonObject){
+    @ApiOperation(value = "用于保存某一条支路的信息，见图1.4基本信息1")
+    @RequestMapping(value = "/updateRoadDetail",method = RequestMethod.POST)
+    public Result updateRoadDetail(@ApiParam(name = "road" ,value = "需要的为road中的属性，必须要的值为id",required = true) @RequestBody Road road){
+        roadService.updateRoadDetail(road);
+        return Result.ok().message("保存成功");
+    }
+    @ApiOperation(value = "点击某一条主路后它的具体信息")
+    @RequestMapping(value = "/selectRoadDetail",method = RequestMethod.POST)
+    public Result selectRoadDetail(@ApiParam(name = "jsonObject",value = "需要的值为roadId",required = true)@RequestBody JSONObject jsonObject){
         Integer roadId = jsonObject.getInteger("roadId");
         Road road = roadService.selectRoadDetail(roadId);
         return Result.ok().data("road",road);
