@@ -55,10 +55,10 @@ public class BranchRoadController {
             return Result.error(ResultCode.PARAM_IS_BLANK).message("照片名称或照片类型不能为空");
         }
         if (roadId==null){
-            branchRoadService.insertPicture();
+//            branchRoadService.insertPicture();
         }
         else if(branchId==null){
-            roadService.insertPicture();
+//            roadService.insertPicture();
         }
         return Result.ok();
 
