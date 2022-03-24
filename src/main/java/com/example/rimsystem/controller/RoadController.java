@@ -74,6 +74,7 @@ public class RoadController {
         return roadService.deleteRoadById(roadId);
     }
 //    点击某一条道路，在地图上绘制出他的路线
+
     @RequestMapping("/drawLine")
     @ResponseBody
     public List<Coordinate> drawRoadLineBySearchId(@RequestBody Integer roadId){
