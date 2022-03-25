@@ -2,10 +2,7 @@ package com.example.rimsystem.controller;
 
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
-import com.example.rimsystem.bean.BranchPatrol;
-import com.example.rimsystem.bean.MaintenancePlan;
-import com.example.rimsystem.bean.PatrolLog;
-import com.example.rimsystem.bean.Table;
+import com.example.rimsystem.bean.*;
 import com.example.rimsystem.service.PlanService;
 import com.example.rimsystem.seucurity.Result;
 import com.fasterxml.jackson.annotation.JsonFormat;
@@ -38,8 +35,8 @@ public class PlanManagementController {
     public Result allPlan(@RequestBody JSONObject jsonObject){
         Integer currentPage = (Integer)jsonObject.get("currentPage");
         Integer pageSize = (Integer)jsonObject.get("pageSize");
-        List<MaintenancePlan> maintenancePlans = planService.selectAllPlan(currentPage, pageSize);
-        return Result.ok().data("plan",maintenancePlans);
+        PageBean pageBean = planService.selectAllPlan(currentPage, pageSize);
+        return Result.ok().data("pageBean",pageBean);
     }
     /**
      * @function：点击查看某一个具体的维修计划,在维修管理模块中，维修计划和现场实施记录使用同一个接口

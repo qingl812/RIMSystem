@@ -1,15 +1,12 @@
 package com.example.rimsystem.service;
 
-import com.example.rimsystem.bean.BranchPatrol;
-import com.example.rimsystem.bean.MaintenancePlan;
-import com.example.rimsystem.bean.PatrolLog;
-import com.example.rimsystem.bean.Table;
+import com.example.rimsystem.bean.*;
 import com.github.pagehelper.PageInfo;
 
 import java.util.List;
 
 public interface PlanService {
-    List<MaintenancePlan> selectAllPlan(Integer currentPage,Integer pageSize);
+    PageBean selectAllPlan(Integer currentPage, Integer pageSize);
 
     List<BranchPatrol> searchPatrolOfPlan(Integer planId);
 

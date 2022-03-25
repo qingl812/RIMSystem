@@ -82,7 +82,7 @@ public class PlanServiceImpl implements PlanService {
     }
 
     @Override
-    public List<MaintenancePlan> selectAllPlan(Integer currentPage,Integer pageSize) {
+    public PageBean selectAllPlan(Integer currentPage,Integer pageSize) {
         PageBean<MaintenancePlan> pageBean = new PageBean<>();
         pageBean.setTotalCount(planTKMapper.selectCount(new MaintenancePlan()));
         pageBean.setCurrentPage(currentPage);
@@ -93,6 +93,7 @@ public class PlanServiceImpl implements PlanService {
             pageBean.setCurrentPage(pageBean.getTotalPage());
         }
         int index = (pageBean.getCurrentPage() - 1) * pageSize;
-        return planTKMapper.selectAllPlanLimit(index, pageSize);
+         pageBean.setPageData(planTKMapper.selectAllPlanLimit(index, pageSize));
+         return pageBean;
     }
 }
