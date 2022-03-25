@@ -4,6 +4,8 @@ import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.example.rimsystem.bean.*;
 import com.example.rimsystem.service.PlanService;
+import com.example.rimsystem.service.RoadService;
+import com.example.rimsystem.service.UserService;
 import com.example.rimsystem.seucurity.Result;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.github.pagehelper.PageInfo;
@@ -25,6 +27,26 @@ import java.util.List;
 public class PlanManagementController {
     @Autowired
     PlanService planService;
+    @Autowired
+    UserService userService;
+    @Autowired
+    RoadService roadService;
+
+    @RequestMapping("/allManagement")
+    public Result allManagement(){
+        List<String> strings = userService.selectAllManagement();
+        return Result.ok().data("Organization",strings);
+    }
+
+    @RequestMapping("/selectHomePageRoad")
+    public Result selectHomePageRoad(@RequestBody JSONObject jsonObject){
+        String unit = jsonObject.getString("unit");
+        String roadName = jsonObject.getString("roadName");
+        Integer currentPage = jsonObject.getInteger("currentPage");
+        Integer pageSize = jsonObject.getInteger("pageSize");
+        PageInfo<Road> roadPageInfo = roadService.selectHomePageRoad(unit,roadName,currentPage,pageSize);
+        return Result.ok().data("pageInfo",roadPageInfo);
+    }
 
     /**
      * @function：进去维修管理模块后，显示所有的维修计划,资金管理资金月度申请第一个界面同样调用此方法

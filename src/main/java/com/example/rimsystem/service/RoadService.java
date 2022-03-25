@@ -3,6 +3,7 @@ package com.example.rimsystem.service;
 import com.example.rimsystem.bean.PageBean;
 import com.example.rimsystem.bean.Road;
 import com.example.rimsystem.bean.RoadPicture;
+import com.github.pagehelper.PageInfo;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Service;
 
@@ -19,4 +20,5 @@ public interface RoadService {
     Road selectRoadDetail(Integer roadId);
     void updateRoadDetail(Road road);
 
+    PageInfo<Road> selectHomePageRoad(String unit, String roadName, Integer currentPage, Integer pageSize);
 }

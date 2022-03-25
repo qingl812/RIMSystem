@@ -3,6 +3,8 @@ package com.example.rimsystem.service.impl;
 import com.example.rimsystem.bean.*;
 import com.example.rimsystem.mapper.*;
 import com.example.rimsystem.service.RoadService;
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -16,8 +18,6 @@ import java.util.List;
 @Service
 public class RoadServiceImpl implements RoadService {
     @Autowired
-    RoadTKMapper roadTKMapper;
-    @Autowired
     BranchRoadGeneralMapper branchRoadGeneralMapper;
     @Autowired
     RoadMapper roadMapper;
@@ -25,6 +25,18 @@ public class RoadServiceImpl implements RoadService {
     RoadDocTKMapper roadDocTKMapper;
     @Autowired
     RoadPicMapper roadPicMapper;
+    @Autowired
+    RoadTKMapper roadTKMapper;
+
+    @Override
+    public PageInfo<Road> selectHomePageRoad(String unit, String roadName, Integer currentPage, Integer pageSize) {
+        StringBuffer stringBuffer = new StringBuffer("%"+roadName+"%");
+        PageHelper.startPage(currentPage,pageSize);
+        List<Road> roads = roadMapper.selectAllHomePage(unit, stringBuffer.toString());
+        PageInfo<Road> pageInfo = new PageInfo(roads);
+        pageInfo.setList(roads);
+        return pageInfo;
+    }
 
     @Override
     public void updateRoadDetail(Road road) {

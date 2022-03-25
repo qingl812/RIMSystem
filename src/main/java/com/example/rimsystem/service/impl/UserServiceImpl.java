@@ -34,6 +34,12 @@ public class UserServiceImpl implements UserService {
 //        return userGeneralMapper.selectOne(user);
 //    }
 
+
+    @Override
+    public List<String> selectAllManagement() {
+        return userMapper.selectAllManagement();
+    }
+
     @Override
     public String selectRolesAndPerByUsername(String username) {
         String authorities="";

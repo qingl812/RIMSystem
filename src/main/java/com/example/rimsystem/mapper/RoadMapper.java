@@ -15,6 +15,7 @@ public interface RoadMapper {
     String selectCoordinateById(Integer roadId);
     List<Road> selectOneRoadByInfo(String name, String roadType, String roadMaintenance,int index,int count);
     List<Road> selectAllRoad(String roadName,String roadType,String roadMaintenanceGrade, int index, int count);
+    List<Road> selectAllHomePage(String unit, String roadName);
 //    @Select("insert into road_picture(id,picture_name,picture_type,remark,picture_path) values(null,#{param1),#{param4},#{param3},#{param2}")
 //    void insertRoadPic(String picName,String picPath,String remark,String pictureType);
 }
