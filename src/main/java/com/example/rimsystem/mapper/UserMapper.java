@@ -16,5 +16,6 @@ public interface UserMapper {
     List<String> selectPerCodeByRoleId(List<Role> roles);
     @Select("select distinct organization_name from user" )
     List<String> selectAllManagement();
+    User selectUserByUserName(String username);
 }
 

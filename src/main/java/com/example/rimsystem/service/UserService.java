@@ -10,4 +10,6 @@ public interface UserService {
     String selectRolesAndPerByUsername(String username);
 
     List<String> selectAllManagement();
+
+    User selectUserInfoByUserName(String username);
 }

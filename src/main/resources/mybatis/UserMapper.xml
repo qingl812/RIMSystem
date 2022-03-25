@@ -15,4 +15,17 @@
              #{roles.id}
         </foreach>
     </select>
+
+    <resultMap id="userInfo" type="com.example.rimsystem.bean.User">
+        <result property="username" column="username"/>
+        <result property="organizationName" column="organization_name"/>
+        <collection property="roles" ofType="com.example.rimsystem.bean.Role">
+            <result property="roleDescription" column="role_description"/>
+        </collection>
+    </resultMap>
+    <select id="selectUserByUserName" resultMap="userInfo">
+        select username,organization_name,role_description
+               from user u left join sys_user_role_relation surr on u.id = surr.user_id left join
+                   sys_role sr on surr.role_id = sr.id
+    </select>
 </mapper>

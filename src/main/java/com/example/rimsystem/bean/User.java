@@ -6,6 +6,7 @@ import lombok.NoArgsConstructor;
 import lombok.ToString;
 
 import javax.persistence.Id;
+import java.util.List;
 
 /**
  * @auther luyu
@@ -22,6 +23,7 @@ public class User {
     private String password;
 //    管理单位
     private String organizationName;
+    private List<Role> roles;
 //        是否激活
     private Integer status;
 }
