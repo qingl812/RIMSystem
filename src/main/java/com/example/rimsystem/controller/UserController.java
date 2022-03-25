@@ -12,13 +12,14 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
 
-@Controller
+@RestController
 public class UserController {
     @Autowired
     UserService userService;
@@ -26,8 +27,7 @@ public class UserController {
     @RequestMapping("/userInfo")
     public Result selectUserInfo(){
         SecurityContext context = SecurityContextHolder.getContext();
-        AccountUser accountUser = (AccountUser)context.getAuthentication().getPrincipal();
-        String username = accountUser.getUsername();
+        String username = context.getAuthentication().getName();
         User user = userService.selectUserInfoByUserName(username);
         return Result.ok().data("user",user);
     }

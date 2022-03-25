@@ -27,5 +27,6 @@
         select username,organization_name,role_description
                from user u left join sys_user_role_relation surr on u.id = surr.user_id left join
                    sys_role sr on surr.role_id = sr.id
+                 where username=#{username}
     </select>
 </mapper>
