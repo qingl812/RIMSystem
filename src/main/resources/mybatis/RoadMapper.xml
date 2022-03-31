@@ -57,6 +57,7 @@
         limit #{param4},#{param5}
     </select>
     <select id="selectOneRoad" resultMap="oneRoad">
+        select
     </select>
     <resultMap id="roadAndUser" type="com.example.rimsystem.bean.Road">
         <result property="id" column="rId"/>

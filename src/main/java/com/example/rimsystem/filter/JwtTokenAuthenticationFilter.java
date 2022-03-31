@@ -1,6 +1,8 @@
 package com.example.rimsystem.filter;
 
+import com.example.rimsystem.Schedule;
 import com.example.rimsystem.service.UserService;
+import com.example.rimsystem.service.impl.UserDetailServiceImpl;
 import com.example.rimsystem.tool.JwtTokenUtils;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.JwtException;
@@ -52,7 +54,7 @@ public class JwtTokenAuthenticationFilter extends BasicAuthenticationFilter {
             throw new JwtException("token 已过期");
         }
         String username = claim.getSubject();
-        String rolesAndPer = userService.selectRolesAndPerByUsername(username);
+        String rolesAndPer = userService.selectRolesAndPerByUsername(username, Schedule.getRedisBloomFilter());
         List<GrantedAuthority> grantedAuthorities = AuthorityUtils.commaSeparatedStringToAuthorityList(rolesAndPer);
         //获取用户的权限信息等信息
         UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken = new UsernamePasswordAuthenticationToken(username,null,grantedAuthorities);

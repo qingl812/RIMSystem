@@ -4,6 +4,7 @@ import com.example.rimsystem.annotation.Log;
 import com.example.rimsystem.bean.Road;
 import com.example.rimsystem.bean.RoadType;
 import com.example.rimsystem.service.RoadTypeService;
+import com.example.rimsystem.seucurity.Result;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
@@ -27,4 +28,9 @@ public class RoadTypeController {
         return types;
     }
 
+    @RequestMapping("/searchMaintenanceGrade")
+    public Result searchMaintenanceGrade(){
+        List<String> list = roadTypeService.searchMaintenanceGrade();
+        return Result.ok().data("list",list);
+    }
 }

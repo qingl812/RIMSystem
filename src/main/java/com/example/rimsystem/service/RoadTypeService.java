@@ -6,4 +6,6 @@ import java.util.List;
 
 public interface RoadTypeService {
     public List<RoadType> searchRoadType();
+
+    List<String> searchMaintenanceGrade();
 }

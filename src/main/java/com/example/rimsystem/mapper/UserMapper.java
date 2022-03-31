@@ -17,5 +17,7 @@ public interface UserMapper {
     @Select("select distinct organization_name from user" )
     List<String> selectAllManagement();
     User selectUserByUserName(String username);
+    @Select("select username from user")
+    List<String> selectAllUsername();
 }
 

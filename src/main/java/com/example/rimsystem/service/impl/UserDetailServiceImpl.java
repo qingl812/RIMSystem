@@ -1,10 +1,14 @@
 package com.example.rimsystem.service.impl;
 
 import com.alibaba.fastjson.JSONObject;
+import com.example.rimsystem.Schedule;
 import com.example.rimsystem.bean.AccountUser;
+import com.example.rimsystem.filter.RedisBloomFilter;
 import com.example.rimsystem.mapper.UserGeneralMapper;
 import com.example.rimsystem.mapper.UserMapper;
 import com.example.rimsystem.service.UserService;
+import com.example.rimsystem.tool.BloomFilterHelper;
+import com.example.rimsystem.tool.SpringUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.security.authentication.DisabledException;
@@ -17,6 +21,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
+import javax.annotation.PostConstruct;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
@@ -27,10 +32,16 @@ import java.util.concurrent.TimeUnit;
  */
 @Service
 public class UserDetailServiceImpl implements UserDetailsService {
+
     @Autowired
-    private UserGeneralMapper userGeneralMapper;
+    private Schedule schedule;
+
     @Autowired
     private UserService userService;
+
+    @Autowired
+    private UserGeneralMapper userGeneralMapper;
+
     @Autowired
     private RedisTemplate<String,String> redisTemplate;
     @Override
@@ -58,8 +69,13 @@ public class UserDetailServiceImpl implements UserDetailsService {
 
     }
     public List<GrantedAuthority> getRoleStringToList(String username){
-        String rolesAndPer = userService.selectRolesAndPerByUsername(username);
-        return AuthorityUtils.commaSeparatedStringToAuthorityList(rolesAndPer);
+        if(Schedule.getRedisBloomFilter().contains(Schedule.getBloomFilterHelper(),"bloomUsername",username)){
+            String rolesAndPer = userService.selectRolesAndPerByUsername(username,Schedule.getRedisBloomFilter());
+            return AuthorityUtils.commaSeparatedStringToAuthorityList(rolesAndPer);
+        }
+        else {
+            throw new UsernameNotFoundException(username+"这个用户不存在");
+        }
 
     }
 }

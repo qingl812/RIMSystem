@@ -48,9 +48,8 @@ public class RoadServiceImpl implements RoadService {
 
     @Override
     public Road selectRoadDetail(Integer roadId) {
-        Road road = new Road();
-        road.setId(roadId);
-        return roadTKMapper.selectOne(road);
+        Road road = roadMapper.selectOneRoad(roadId);
+        return road;
     }
 
     @Transactional(rollbackFor = {RuntimeException.class,Exception.class})
