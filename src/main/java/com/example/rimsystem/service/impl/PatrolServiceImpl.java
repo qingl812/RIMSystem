@@ -140,7 +140,7 @@ public class PatrolServiceImpl implements PatrolService {
     }
 
     @Override
-    public PageBean<PatrolLog> searchPatrolByTime(Integer roadId, Integer currentPage, String startTime, String endTime) {
+    public PageBean<PatrolLog> searchPatrolByTime(Integer pageSize,Integer roadId, Integer currentPage, String startTime, String endTime) {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd");
         Date start = null;
         Date end = null;
@@ -154,6 +154,7 @@ public class PatrolServiceImpl implements PatrolService {
         Example example = new Example(PatrolLog.class);
         example.createCriteria().andBetween("checkTime",new Timestamp(start.getTime()),new Timestamp(end.getTime())).andEqualTo("roadId",roadId);
         pageBean.setTotalCount(patrolTKMapper.selectCountByExample(example));
+        pageBean.setPageCount(pageSize);
         pageBean.setCurrentPage(currentPage);
         if (pageBean.getCurrentPage() == 0) {
             pageBean.setCurrentPage(1);

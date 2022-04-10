@@ -141,8 +141,8 @@ public Result  diseaseSummary(@RequestBody HashMap map){
     }
 //道路巡查模块中根据年月日区间查找某一条道路的所有巡查信息
     @RequestMapping("/searchPatrolByTime")
-    public Result searchPatrolByTime(Integer roadId,Integer currentPage,String startTime,String endTime){
-        PageBean<PatrolLog> pageBean = patrolService.searchPatrolByTime(roadId, currentPage,startTime,endTime);
+    public Result searchPatrolByTime(Integer pageSize,Integer roadId,Integer currentPage,String startTime,String endTime){
+        PageBean<PatrolLog> pageBean = patrolService.searchPatrolByTime(pageSize,roadId, currentPage,startTime,endTime);
         Map map = new HashMap();
         map.put("pageBean",pageBean);
         return Result.ok().data(map);

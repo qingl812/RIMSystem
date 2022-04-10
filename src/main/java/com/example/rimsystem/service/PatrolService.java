@@ -10,7 +10,7 @@ public interface PatrolService {
     List<BranchPatrol> searchPatrolOfBranchRoad(Integer patrolId);
     int createOnePatrol(Integer roadId,Timestamp checkTime,String weather,String patrolPerson,String roadName);
     void insertBranchPatrol(BranchPatrol branchPatrol);
-    PageBean<PatrolLog> searchPatrolByTime(Integer roadId, Integer currentPage, String startTime, String endTime);
+    PageBean<PatrolLog> searchPatrolByTime(Integer pageSize,Integer roadId, Integer currentPage, String startTime, String endTime);
     PageBean<Road> searchAllRoadPatrol(Road road,Integer currentPage);
     List<PatrolLog> searchPatrolByMonth(String startTime, String endTime);
     BranchPatrol searchDetail(Integer branchPatrolId);
