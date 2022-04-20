@@ -7,6 +7,8 @@ import com.example.rimsystem.service.RoadDocService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 /**
  * @auther luyu
  */
@@ -16,6 +18,12 @@ public class RoadDocServiceImpl implements RoadDocService {
     RoadDocMapper roadDocMapper;
     @Autowired
     RoadDocTKMapper roadDocTKMapper;
+
+    @Override
+    public List<String> selectAllRoadDocType() {
+        return roadDocMapper.selectAllRoadDocType();
+    }
+
     @Override
     public int updateDocPath(String filePath, Integer roadId) {
             return roadDocMapper.updateDocPath(filePath,roadId);

@@ -4,4 +4,8 @@
     <update id="updateDocPath">
         update road_doc set doc_path=#{param1} where id=#{param2}
     </update>
+
+    <select id="selectAllRoadDocType" resultType="java.lang.String">
+        select type_name from road_doc_type
+    </select>
 </mapper>

@@ -2,8 +2,13 @@ package com.example.rimsystem.tool;
 
 import org.apache.commons.lang3.StringUtils;
 
+import javax.servlet.ServletInputStream;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletRequestWrapper;
+import java.io.BufferedReader;
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
+import java.io.InputStreamReader;
 
 /**
  * @auther luyu
@@ -47,6 +52,8 @@ public class XssHttpServletRequestWrapper extends HttpServletRequestWrapper {
         }
         return arr;
     }
+
+
 
 
     /**

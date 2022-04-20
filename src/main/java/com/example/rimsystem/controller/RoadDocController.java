@@ -25,10 +25,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.*;
 import java.net.URLEncoder;
 import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.UUID;
+import java.util.*;
 
 /**
  * @auther luyu
@@ -40,6 +37,15 @@ public class RoadDocController {
     @Autowired
     RoadService roadService;
     public final static String UPLOAD_PATH_PREFIX = "static/uploadFile/";
+
+    @RequestMapping("/roadDocType")
+    @ResponseBody
+    public Result getAllRoadDocType(){
+        List<String> types = roadDocService.selectAllRoadDocType();
+        return Result.ok().data("docType",types);
+    }
+
+
     @PostMapping("uploadPicture")
     @ResponseBody
     @Log("上传照片")
