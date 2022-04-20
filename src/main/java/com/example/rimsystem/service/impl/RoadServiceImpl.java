@@ -2,11 +2,14 @@ package com.example.rimsystem.service.impl;
 
 import com.example.rimsystem.bean.*;
 import com.example.rimsystem.mapper.*;
+import com.example.rimsystem.service.RoadDocService;
 import com.example.rimsystem.service.RoadService;
+import com.example.rimsystem.seucurity.Result;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import tk.mybatis.mapper.entity.Example;
 
@@ -19,6 +22,8 @@ import java.util.List;
 public class RoadServiceImpl implements RoadService {
     @Autowired
     BranchRoadGeneralMapper branchRoadGeneralMapper;
+    @Autowired
+    RoadDocService roadDocService;
     @Autowired
     RoadMapper roadMapper;
     @Autowired
@@ -75,17 +80,24 @@ public class RoadServiceImpl implements RoadService {
     }
 
     @Override
-    public int deleteRoadById(Integer roadId) {
+    @Transactional(propagation = Propagation.REQUIRED)
+    public Result deleteRoadById(Integer roadId) {
         Road road = new Road();
         road.setId(roadId);
-        int delete1 = roadTKMapper.delete(road);
-        BranchRoad branchRoad = new BranchRoad();
-        branchRoad.setRoadId(roadId);
-        int delete2 = branchRoadGeneralMapper.delete(branchRoad);
-        RoadDoc roadDoc = new RoadDoc();
-        roadDoc.setRoadId(roadId);
-        int delete = roadDocTKMapper.delete(roadDoc);
-        return delete+delete1+delete2;
+        try {
+            int delete1 = roadTKMapper.delete(road);
+            BranchRoad branchRoad = new BranchRoad();
+            branchRoad.setRoadId(roadId);
+            int delete2 = branchRoadGeneralMapper.delete(branchRoad);
+            RoadDoc roadDoc = new RoadDoc();
+            roadDoc.setRoadId(roadId);
+            RoadDoc completeRoadDoc = roadDocTKMapper.selectOne(roadDoc);
+            roadDocService.deleteRoadDoc(completeRoadDoc.getId());
+        } catch (Exception e) {
+            e.printStackTrace();
+            return Result.error();
+        }
+        return Result.ok();
     }
 
     @Override

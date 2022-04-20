@@ -1,6 +1,7 @@
 package com.example.rimsystem.service;
 
 import com.example.rimsystem.bean.*;
+import com.example.rimsystem.seucurity.Result;
 
 import java.sql.Timestamp;
 import java.util.List;
@@ -17,4 +18,6 @@ public interface PatrolService {
     int createPlanTable(Integer[] branchPatrolId, String year, String month, String[] remarks);
     MaintenancePlan selectBranchPatrolsByPlan(Integer planId);
     void createTable(Table table);
+
+    Result deleteSelectedPatrol(int patrolId);
 }

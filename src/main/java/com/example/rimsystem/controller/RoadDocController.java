@@ -14,10 +14,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.ClassUtils;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
@@ -30,7 +27,7 @@ import java.util.*;
 /**
  * @auther luyu
  */
-@Controller
+@RestController
 public class RoadDocController {
     @Autowired
     RoadDocService roadDocService;
@@ -39,15 +36,18 @@ public class RoadDocController {
     public final static String UPLOAD_PATH_PREFIX = "static/uploadFile/";
 
     @RequestMapping("/roadDocType")
-    @ResponseBody
     public Result getAllRoadDocType(){
         List<String> types = roadDocService.selectAllRoadDocType();
         return Result.ok().data("docType",types);
     }
 
+    @RequestMapping("deleteRoadDoc")
+    public Result deleteRoadDoc(@RequestBody int docId){
+        Result result = roadDocService.deleteRoadDoc(docId);
+        return result;
+    }
 
     @PostMapping("uploadPicture")
-    @ResponseBody
     @Log("上传照片")
     public Result uploadPicture(RoadPicture roadPicture){
         MultipartFile pictureEntity = roadPicture.getPictureEntity();
@@ -74,7 +74,6 @@ public class RoadDocController {
 //    上传各种附件,除了图片附件以外
     @PostMapping("/uploadFile")
     @Log("上传附件")
-    @ResponseBody
     public Result uploadFile(RoadDoc roadDoc){
         MultipartFile uploadFile = roadDoc.getDocEntity();
         if(uploadFile.isEmpty()){

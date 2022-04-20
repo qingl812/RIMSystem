@@ -21,4 +21,5 @@ public interface PatrolTKMapper extends Mapper<PatrolLog> {
     void insertPlanAndPatrolRealtion(Integer id, int branchPatrolId,String remark);
     MaintenancePlan selectBranchPatrolsByPlan(Integer planId);
     PatrolLog selectOnePlansPatrol(Integer planId);
+    void deleteBranchWithPatrolLog(int patrolId);
 }

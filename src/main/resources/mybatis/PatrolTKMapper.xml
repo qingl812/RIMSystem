@@ -9,6 +9,12 @@
         <result column="road_name" property="roadName"/>
         <result column="weather" property="weather"/>
     </resultMap>
+
+    <delete id="deleteBranchWithPatrolLog">
+        delete from branch_patrol where id in (select * from (select bp.id from branch_patrol bp left join patrol_log pl on pl.id = bp.patrol_log_id where pl.id=#{patrolId})as temp)
+    </delete>
+
+
     <insert id="insertBranchPatrol">
         insert into branch_patrol(id,patrol_log_id,branch_name,branch_id,location_describe,
                                   pavement_break,sidewalk_brick_break,blind_brick_break,curb_break,

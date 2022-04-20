@@ -30,8 +30,10 @@ public class PatrolController {
     @Autowired
     PatrolService patrolService;
 
-
-
+    @RequestMapping("/deletePatrol")
+    public Result deleteSelectedPatrol(int patrolId){
+        return patrolService.deleteSelectedPatrol(patrolId);
+    }
 
 //具体的新建一个呈批表，并和维修计划关联
     /**

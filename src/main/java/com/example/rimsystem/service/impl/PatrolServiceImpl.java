@@ -3,6 +3,7 @@ package com.example.rimsystem.service.impl;
 import com.example.rimsystem.bean.*;
 import com.example.rimsystem.mapper.*;
 import com.example.rimsystem.service.PatrolService;
+import com.example.rimsystem.seucurity.Result;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
@@ -29,6 +30,15 @@ public class PatrolServiceImpl implements PatrolService {
     PlanTKMapper planTKMapper;
     @Autowired
     TableTKMapper tableTKMapper;
+
+    @Override
+    public Result deleteSelectedPatrol(int patrolId) {
+        PatrolLog patrolLog = new PatrolLog();
+        patrolLog.setId(patrolId);
+        patrolTKMapper.delete(patrolLog);
+        patrolTKMapper.deleteBranchWithPatrolLog(patrolId);
+        return Result.ok();
+    }
 
     @Override
     public MaintenancePlan selectBranchPatrolsByPlan(Integer planId) {
